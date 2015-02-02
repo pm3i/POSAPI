@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * PosInvoice
  *
  * @ORM\Table(name ="pos_invoice")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="heyAuto\DemoBundle\Entity\PosInvoiceRepository")
  */
 class PosInvoice
 {
