@@ -1,0 +1,11 @@
+test.db.host=10.100.4.242
+test.db.user=heyauto_template
+test.db.password=heyauto_template123
+source.test.db.name=heyauto_template
+test.db.name=heyauto_test_www
+
+dev.db.host=10.100.4.242
+dev.db.user=heyauto_template
+dev.db.password=heyauto_template123
+source.dev.db.name=heyauto_template
+dev.db.name=heyauto_dev

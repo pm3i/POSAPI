@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Heyauto" default="build">
+  <property name="workspace" value="${basedir}" />
+  <property name="sourcedir" value="${basedir}/src" />
+  <property name="builddir" value="${workspace}/app/build" />
+  <property file="ant.properties" />
+
+  <target name="build-prod"
+    depends="prepare,override-ant-properties,load-ant-properties,create-local-parameters,override-parameters-yml,override-phpunit-parameters,lint,phploc,pdepend,phpcpd,phpmd-ci,phpcs-ci,phpdoc,create-test-database,create-dev-database,phpunit,phpcb"/>
+
+  <target name="build"
+    depends="prepare,load-ant-properties,lint,phploc,pdepend,phpcpd,phpmd-ci,phpcs-ci,phpdoc,create-test-database,phpunit,phpcb"/>
+
+  <target name="build-min"
+    depends="prepare,load-ant-properties,lint,create-test-database,phpunit"/>
+
+  <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
+
+  <target name="tools-parallel" description="Run tools in parallel">
+    <parallel threadCount="2">
+      <sequential>
+        <antcall target="pdepend"/>
+        <antcall target="phpmd-ci"/>
+      </sequential>
+      <antcall target="phpcpd"/>
+      <antcall target="phpcs-ci"/>
+      <antcall target="phploc"/>
+      <antcall target="phpdoc"/>
+    </parallel>
+  </target>
+
+  <target name="clean" description="Cleanup build artifacts">
+    <delete dir="${builddir}/api"/>
+    <delete dir="${builddir}/code-browser"/>
+    <delete dir="${builddir}/coverage"/>
+    <delete dir="${builddir}/logs"/>
+    <delete dir="${builddir}/pdepend"/>
+    <delete dir="${builddir}/docs/*"/>
+  </target>
+
+  <target name="prepare" depends="clean" description="Prepare for build">
+    <mkdir dir="${builddir}/api"/>
+    <mkdir dir="${builddir}/code-browser"/>
+    <mkdir dir="${builddir}/coverage"/>
+    <mkdir dir="${builddir}/logs"/>
+    <mkdir dir="${builddir}/pdepend"/>
+  </target>
+
+  <target name="lint" description="Perform syntax check of sourcecode files">
+    <apply executable="php" failonerror="true">
+    <arg value="-l" />
+    <fileset dir="${sourcedir}">
+      <include name="**/*.php" />
+      <modified />
+    </fileset>
+    <fileset dir="${basedir}/src/">
+      <include name="**/*Test.php" />
+      <modified />
+    </fileset>
+    </apply>
+  </target>
+
+  <target name="phploc" description="Measure project size using PHPLOC">
+    <exec executable="phploc">
+    <arg value="--log-csv" />
+    <arg value="${builddir}/logs/phploc.csv" />
+    <arg path="${sourcedir}" />
+    </exec>
+  </target>
+
+  <target name="pdepend" description="Calculate software metrics using PHP_Depend">
+    <exec executable="pdepend">
+      <arg value="--jdepend-xml=${builddir}/logs/jdepend.xml" />
+      <arg value="--jdepend-chart=${builddir}/pdepend/dependencies.svg" />
+      <arg value="--overview-pyramid=${builddir}/pdepend/overview-pyramid.svg" />
+      <arg path="${sourcedir}" />
+    </exec>
+  </target>
+
+  <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
+    <exec executable="phpmd">
+      <arg path="${basedir}/src" />
+      <arg value="text" />
+      <arg value="${workspace}/app/phpmd.xml" />
+    </exec>
+  </target>
+
+  <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
+    <exec executable="phpmd">
+      <arg path="${sourcedir}" />
+      <arg value="xml" />
+      <arg value="${workspace}/app/phpmd.xml" />
+      <arg value="--reportfile" />
+      <arg value="${builddir}/logs/pmd.xml" />
+    </exec>
+  </target>
+
+  <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
+    <exec executable="phpcs">
+      <arg value="--standard=Symfony2" />
+      <arg path="${sourcedir}" />
+    </exec>
+  </target>
+
+  <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
+    <exec executable="phpcs" output="/dev/null">
+      <arg value="--report=checkstyle" />
+      <arg value="--report-file=${builddir}/logs/checkstyle.xml" />
+      <arg value="--standard=Symfony2" />
+      <arg path="${sourcedir}" />
+    </exec>
+  </target>
+
+  <target name="phpcpd" description="Find duplicate code using PHPCPD">
+    <exec executable="phpcpd">
+      <arg value="--log-pmd" />
+      <arg value="${builddir}/logs/pmd-cpd.xml" />
+      <arg path="${sourcedir}" />
+    </exec>
+  </target>
+
+  <target name="phpdoc" description="Generate API documentation using phpDoc">
+    <exec executable="phpdoc">
+      <arg line="-d '${sourcedir}' -t '${builddir}/docs' --title='Tempo' " />
+    </exec>
+  </target>
+
+  <target name="phpunit" description="Run unit tests with PHPUnit">
+    <exec executable="phpunit" failonerror="true">
+      <arg line="-c ${basedir}/app/phpunit.xml"/>
+    </exec>
+  </target>
+
+  <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
+    <exec executable="phpcb">
+      <arg value="--log" />
+      <arg path="${builddir}/logs" />
+      <arg value="--source" />
+      <arg path="${sourcedir}" />
+      <arg value="--output" />
+      <arg path="${builddir}/code-browser" />
+    </exec>
+  </target>
+
+  <target name="create-local-parameters" description="Create parameters_dev.local.yml">
+    <touch file="app/config/parameters_dev.local.yml"/>
+  </target>
+
+  <target name="vendors" description="Update vendors">
+    <exec executable="php" failonerror="true">
+        <arg value="composer.phar" />
+        <arg value="update" />
+    </exec>
+  </target>
+
+  <target name="override-parameters-yml" description="Copy parameters.yml.dist to parameters.yml">
+    <exec executable="cp" failonerror="true">
+      <arg path="app/config/parameters.yml.dist" />
+      <arg path="app/config/parameters.yml" />
+    </exec>
+  </target>
+
+  <target name="override-phpunit-parameters" description="Copy phpunit.xml.dist to phpunit.xml">
+    <exec executable="cp" failonerror="true">
+      <arg path="app/phpunit.xml.dist" />
+      <arg path="app/phpunit.xml" />
+    </exec>
+  </target>
+
+  <target name="override-ant-properties" description="Copy ant.properties.dist to ant.properties">
+    <exec executable="cp" failonerror="true">
+      <arg path="ant.properties.dist" />
+      <arg path="ant.properties" />
+    </exec>
+  </target>
+
+  <target name="load-ant-properties">
+    <loadproperties srcFile="ant.properties"/>
+  </target>
+
+  <!-- TEST DATABASE -->
+  <target name="drop-test-database" depends="load-ant-properties">
+    <echo>mysql -h ${test.db.host} -u ${test.db.user} -p${test.db.password} -e &quot;DROP DATABASE IF EXISTS ${test.db.name}&quot;</echo>
+    <exec executable="bash">
+        <arg value="-c"/>
+        <arg value="mysql -h ${test.db.host} -u ${test.db.user} -p${test.db.password} -e &quot;DROP DATABASE IF EXISTS ${test.db.name}&quot;"/>
+    </exec>
+  </target>
+
+  <target name="create-empty-test-database" depends="drop-test-database">
+    <echo>mysql -h ${test.db.host} -u ${test.db.user} -p${test.db.password} -e &quot;CREATE DATABASE ${test.db.name}&quot;</echo>
+    <exec executable="bash">
+        <arg value="-c"/>
+        <arg value="mysql -h ${test.db.host} -u ${test.db.user} -p${test.db.password} -e &quot;CREATE DATABASE ${test.db.name}&quot;"/>
+    </exec>
+  </target>
+
+  <target name="create-test-database" depends="create-empty-test-database">
+    <echo>mysqldump -h ${test.db.host} -u ${test.db.user} -p${test.db.password} ${source.test.db.name} | mysql -h ${test.db.host} -u ${test.db.user} -p${test.db.password} ${test.db.name}</echo>
+    <exec executable="bash">
+        <arg value="-c"/>
+        <arg value="mysqldump -h ${test.db.host} -u ${test.db.user} -p${test.db.password} ${source.dev.db.name} | mysql -h ${test.db.host} -u ${test.db.user} -p${test.db.password} ${test.db.name}"/>
+    </exec>
+  </target>
+
+  <!-- DEV DATABASE -->
+  <target name="drop-dev-database" depends="load-ant-properties">
+    <echo>mysql -h ${dev.db.host} -u ${dev.db.user} -p${dev.db.password} -e &quot;DROP DATABASE IF EXISTS ${dev.db.name}&quot;</echo>
+    <exec executable="bash">
+        <arg value="-c"/>
+        <arg value="mysql -h ${dev.db.host} -u ${dev.db.user} -p${dev.db.password} -e &quot;DROP DATABASE IF EXISTS ${dev.db.name}&quot;"/>
+    </exec>
+  </target>
+
+  <target name="create-empty-dev-database" depends="drop-dev-database">
+    <echo>mysql -h ${dev.db.host} -u ${dev.db.user} -p${dev.db.password} -e &quot;CREATE DATABASE ${dev.db.name}&quot;</echo>
+    <exec executable="bash">
+        <arg value="-c"/>
+        <arg value="mysql -h ${dev.db.host} -u ${dev.db.user} -p${dev.db.password} -e &quot;CREATE DATABASE ${dev.db.name}&quot;"/>
+    </exec>
+  </target>
+
+  <target name="create-dev-database" depends="create-empty-dev-database">
+    <echo>mysqldump -h ${dev.db.host} -u ${dev.db.user} -p${dev.db.password} ${source.dev.db.name} | mysql -h ${dev.db.host} -u ${dev.db.user} -p${dev.db.password} ${dev.db.name}</echo>
+    <exec executable="bash">
+        <arg value="-c"/>
+        <arg value="mysqldump -h ${dev.db.host} -u ${dev.db.user} -p${dev.db.password} ${source.dev.db.name} | mysql -h ${dev.db.host} -u ${dev.db.user} -p${dev.db.password} ${dev.db.name}"/>
+    </exec>
+  </target>
+
+</project>

@@ -1,0 +1,161 @@
+{% extends 'heyAutoDemoBundle:Templates:base.html.twig' %}
+
+{% block title %} Profile {% endblock %}
+
+{% block stylesheets %}
+  <style>
+    
+  </style>
+{% endblock %}
+
+{% block javascript %}
+	<script>
+		function readURL(input) {
+	        if (input.files && input.files[0]) {
+	            var reader = new FileReader();
+
+	            reader.onload = function (e) {
+	                $('#blah')
+	                    .attr('src', e.target.result)
+	                    .width(150)
+	                    .height(200);
+	            };
+
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+    </script>
+{% endblock %}
+
+{% block body %}
+
+	{{ form_start(form, { atrr: {novalidate : 'novalidate'}}) }}
+
+		{# macro draw each vehicle #}
+		{% macro prototype(vehicle) %}
+        <tr>
+	        <td>{{form_widget(vehicle.make, 			{ 'attr':{'class':'input-size-1' }} ) }} </td>
+	        <td>{{form_widget(vehicle.model, 			{ 'attr':{'class':'input-size-1' }} ) }} </td>
+	        <td>{{form_widget(vehicle.color, 			{ 'attr':{'class':'input-size-1' }} ) }} </td>
+	        <td>{{form_widget(vehicle.year, 			{ 'attr':{'class':'input-size-1' }} ) }} </td>
+	        <td>{{form_widget(vehicle.registrationNo, 	{ 'attr':{'class':'input-size-1' }} ) }} </td>
+	        {#<td><ul><li><a href="#">Add</a></li><li><a href="#">Remove</a></li></ul>#}
+        </tr>
+     	{% endmacro %}
+     	<div class="block" align= 'center'>
+     		<b>{{message}}</b>
+     	</div>
+
+     	<div class="container container-size-1 table " align= 'center'>
+     		<input type='file' onchange="readURL(this);" />
+     		{# circle user image #}
+			{% image '@heyAutoDemoBundle/Resources/public/images/profile_pic1.jpg' %}
+		        <img id="blah" src="{{ asset_url }}" class="user-picture" />
+		    {% endimage %}
+
+		    <div class="block Row">
+
+		    	<p class="Cell widthCellProfile"><label> User Name: </label> </p>
+		    	<p class="Cell widthCellProfile"><input value="{{username}}" class="input-size-1" disabled="true" /> </p>
+
+		    </div>
+
+		    <div class="block Row">
+
+			 	<p class="Cell widthCellProfile">
+			 		{{ form_label (form.fullName, 'Full name:', {'label_attr':{'class':'abc' }} ) }}
+			 	</p>
+			    <p class="Cell widthCellProfile">{{ form_widget(form.fullName, { 'attr':{'class':'input-size-1' }} ) }}</p>
+
+		    </div>
+		    
+		    <div class="block">
+
+		    	<p class="Cell widthCellProfile">{{ form_label(form.password.pass, "Password :") }}</p>
+		    	<p class="Cell widthCellProfile">
+		    		{{ form_widget(form.password.pass, { 'attr':{'class':'input-size-1' }} ) }}
+		    	</p>
+
+			</div>
+
+			 <div class="block">
+			 	
+			 	<p class="Cell widthCellProfile">{{ form_label(form.password.confirm, "Repeat Password:") }}</p>
+				<p class="Cell widthCellProfile">
+					{{ form_widget(form.password.confirm, { 'attr':{'class':'input-size-1' }} ) }}
+				</p>
+
+		    </div>
+		   	    
+		    <div class="block">
+
+			    <p class="Cell widthCellProfile">
+			    	{{ form_label (form.email, 'Email:') }}
+			    </p>
+				<p class="Cell widthCellProfile">
+					{{ form_widget(form.email, { 'attr':{'class':'input-size-1'  }} ) }}
+				</p>
+
+		    </div>
+		    
+		    <div class="block">
+
+			  	<p class="Cell widthCellProfile">{{ form_label (form.phoneNo, 'Phone Number:') }}</p>
+			    <p class="Cell widthCellProfile">{{ form_widget(form.phoneNo, { 'attr':{'class':'input-size-1'  }}) }}</p>
+
+		    </div>
+		    
+		    <div class="block">
+
+			    <p class="Cell widthCellProfile">{{ form_label (form.gender, 'Sex:') }}</p>
+				<p class="Cell widthCellProfile">{{ form_widget(form.gender, { 'attr':{'class':'input-size-1'  }} ) }}</p>
+
+		    </div>
+		    
+		    <div class="block">
+
+				<p class="Cell widthCellProfile">{{ form_label (form.birthYear, 'Year of birth:') }}</p>
+		    	<p class="Cell widthCellProfile">
+		    		{{ form_widget(form.birthYear, { 'attr':{'class':'input-size-1'  }} ) }}
+		    	</p>
+
+		    </div>
+	    
+	    </div>
+
+
+		{% set items = ['Make', 'Model', 'Color', 'Year', 'Registration No'] %}
+
+		<div class="container container-size-1">
+		{# circle taxi image #}
+	    {% image '@heyAutoDemoBundle/Resources/public/images/taxi_avatar.png' %}
+	        <img src="{{ asset_url }}" class="taxi-picture" />
+	    {% endimage %}
+	    <div class="Table">
+	    	{% for row in items|batch(6) %}
+		    	<div class="block Row">
+				    <div class="Cell">
+			    		{% for column in row %}
+				  			<p><label class="lblform">{{ column }}</label></p>
+				  		{% endfor %}
+					</div>
+
+				    <div class="Cell">
+					    {% if form.vehicles|e %}
+					    	{% for vehicle in form.vehicles %}
+					    		<p>{{_self.prototype(vehicle)}}</p>
+					    	{% endfor %}
+					    {% endif %}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		    {{ form_row(form.save,   		{ 'attr':{class: 'button button-size-1' }, 'label': 'Save'} )}}
+		   {# {{ form_row(form.show_my_rides,	{ 'attr':{class: 'button button-size-1' }, 'label': 'Show my ride', 'onclick':'{{ path('myrides') }}'} )}} #}
+		   <div class="button button-link">
+		   		<a href="{{ path('myrides') }} " class="link-1" >Show my ride</a>
+		   </div>
+	    {{ form_rest(form) }}
+	{{ form_end(form) }}
+
+{% endblock %}

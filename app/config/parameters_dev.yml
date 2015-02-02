@@ -1,0 +1,19 @@
+# This file is auto-generated during the composer install
+
+parameters:
+    database_driver: pdo_sqlsrv
+    database_host: 117.6.131.222
+    database_port: '1433'
+    database_name: III
+    database_user: sa
+    database_password: Kyluattaptrungthantoc
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    locale: en
+    secret: d2542de82c4d4f7e7fa19f4f19a19ed1915d1e31
+    upload_dir_car: %kernel.root_dir%/../web/images/car/
+    upload_dir_profile: %kernel.root_dir%/../web/images/profile/
+    images_format: .jpg
+    images_max_size: 1800000

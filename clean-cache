@@ -1,0 +1,12 @@
+#!/bin/bash
+# created by Bartosz Maslowski @ SPARQ-Systems.com
+# clean symfony's cache
+
+echo "Cleaning symfony's cache. Please wait.."
+sudo rm -rf app/cache
+mkdir app/cache
+sudo chmod -R 777 app/cache app/logs
+echo "Cleaning cache done."
+echo "Cleaning symfony's logs. Please wait.."
+sudo rm app/logs/dev.log app/logs/prod.log
+echo "Cleaning logs done."

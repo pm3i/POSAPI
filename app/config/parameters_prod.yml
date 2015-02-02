@@ -1,0 +1,43 @@
+# This file is auto-generated during the composer install
+
+#sparq
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: heyauto
+    database_user: heyauto
+    database_password: hey
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
+    debug_toolbar: true
+    debug_redirects: false
+    use_assetic_controller: true
+#    default_table_charset: utf8
+#    default_table_collate: utf8_general_ci
+
+
+
+#home.pl
+#parameters:
+#    database_driver: pdo_mysql
+#    database_host: serwer1453183.home.pl
+#    database_port: null
+#    database_name: 14867613_heyauto
+#    database_user: 14867613_heyauto
+#    database_password: kT3!6YH97Z@^
+#    mailer_transport: smtp
+#    mailer_host: 127.0.0.1
+#    mailer_user: null
+#    mailer_password: null
+#    locale: en
+#    secret: ThisTokenIsNotSoSecretChangeIt
+#    debug_toolbar: true
+#    debug_redirects: false
+#    use_assetic_controller: true
+##    default_table_charset: utf8
+##    default_table_collate: utf8_general_ci

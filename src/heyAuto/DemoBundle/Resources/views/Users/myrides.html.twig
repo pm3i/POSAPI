@@ -1,0 +1,221 @@
+{#  {% extends 'heyAutoDemoBundle:Templates:base.html.twig' %} #}
+{% extends 'heyAutoDemoBundle:Templates:template_2_base.html.twig' %}
+
+
+{% block title %} MY RIDES {% endblock %}
+
+
+
+{% block stylesheets %}
+  <link href="{{ asset('bundles/heyautodemo/css/jquery.rating.css') }}" rel="stylesheet" type="text/css" />
+  <style>
+    .button-right {
+      float:right; 
+      margin: 10px;
+    }
+  </style>
+{% endblock %}
+
+
+
+{% block javascript %}
+  <script src='{{ asset('bundles/heyautodemo/js/jquery.js') }}' type="text/javascript"></script>
+  <script src='{{ asset('bundles/heyautodemo/js/jquery.MetaData.js') }}' type="text/javascript"></script>
+  <script src='{{ asset('bundles/heyautodemo/js/jquery.rating.js') }}' type="text/javascript"></script>
+  <script src='{{ asset('bundles/heyautodemo/js/jquery-ui.min.js') }}' type="text/javascript"></script>
+  <script>
+    $(document).ready(function() {
+
+      $("#myrides_offerer").bind("click",function() {
+
+        if (this.checked) { 
+          {% set offerer = 1 %};
+        }
+        else {
+          {% set offerer = 0 %};
+        }
+
+        document.getElementById("frmRides").submit();
+      });
+
+      $("#myrides_offeree").bind("click",function() {
+
+        if (this.checked) { 
+          {% set offeree = 1 %}; 
+        } else { {% set offeree = 0 %}; } 
+      
+        document.getElementById("frmRides").submit();
+      });
+
+      $('.auto-submit-star').rating( {
+        callback: function(value, link) {
+          document.getElementById("frmRides").submit();
+        }
+      });
+
+      
+
+    });
+  </script>
+{% endblock %}
+
+
+
+
+{% block body %}
+
+<section id="main" class="container">
+
+  <form id="frmRides" action="{{ path('rides') }}" method="post" class="">
+
+    {% macro drawRating(name, checked1, checked2, checked3, checked4, checked5) %}
+      <div class="Clear">
+        <input class="auto-submit-star" type="radio" name="{{ name }}" value="1" {{ checked1 }} />
+        <input class="auto-submit-star" type="radio" name="{{ name }}" value="2" {{ checked2 }}/>
+        <input class="auto-submit-star" type="radio" name="{{ name }}" value="3" {{ checked3 }}/>
+        <input class="auto-submit-star" type="radio" name="{{ name }}" value="4" {{ checked4 }}/>
+        <input class="auto-submit-star" type="radio" name="{{ name }}" value="5" {{ checked5 }}/>
+      </div>
+    {% endmacro %}
+
+    {% macro showRating(rating, name) %}
+        {% if rating == 0|e %}
+          {{_self.drawRating(name, '', '', '', '', '')}}
+        {% endif %}
+
+        {% if rating == 1 %}
+          {{_self.drawRating(name, 'checked', '', '', '', '')}}
+        {% endif %}
+
+        {% if rating == 2 %}
+          {{_self.drawRating(name, '', 'checked', '', '', '')}}
+        {% endif %}
+
+        {% if rating == 3 %}
+          {{_self.drawRating(name, '', '', 'checked', '', '')}}
+        {% endif %}
+
+        {% if rating == 4 %}
+          {{_self.drawRating(name, '', '', '', 'checked', '')}}
+        {% endif %}
+
+        {% if rating == 5 %}
+          {{_self.drawRating(name, '', '', '', '', 'checked')}}
+        {% endif %}
+    {% endmacro %}
+    
+    <div class="row">
+      <div class="12u">
+       
+          <div class="row uniform 50%">
+            <div class="6u 12u(2)" >
+              {% if offerer == 1 %}
+                <input type="checkbox" id="myrides_offerer" name="myrides_offerer" checked>
+              {% else %}
+                <input type="checkbox" id="myrides_offerer" name="myrides_offerer" >
+              {% endif %}
+              <label for="myrides_offerer">Driver</label>
+            
+              {% if offeree == 1 %}
+                <input type="checkbox" id="myrides_offeree" name="myrides_offeree" checked>
+              {% else %}
+                <input type="checkbox" id="myrides_offeree" name="myrides_offeree" >
+              {% endif %}
+              <label for="myrides_offeree">Passenger</label>
+            </div>
+
+            <!-- <div class="button-right">
+              <div class="">
+                <ul class="actions">
+                  <input type="submit" disabled="true" id="myrides_chose_role" name="myrides_chose_role" value="Submit" class= "button special button-size-1 form-center " />
+                </ul>
+              </div>
+            </div> -->
+          </div> 
+        
+      </div>
+    </div>
+    </br>
+
+    <!-- offerer table -->
+    {% if offerer == 1 %}
+    <div class="row">
+      <div class="12u">
+        <section class="box">
+          <div class="table-wrapper">
+
+            <label><h3>Driver</h3></label>
+            <table>
+              <thead>
+                <tr align="center">
+                  <th>Date</th> <th>Distance</th> <th>Pickup</th> <th>Destination</th> <th>Rating</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in data[0] %}
+                <tr>
+                  <td style="width:15%;">{{ item[1] }}</td>
+                  <td style="width:10%;">{{ item[2] }}</td>
+                  <td style="width:30%;">{{ item[3] }}</td>
+                  <td style="width:30%;">{{ item[4] }}</td>
+                  <td style="width:15%;">
+                    {{_self.showRating(item[5], item[0])}}
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+
+            </table>
+
+          </div>
+        </section>
+      </div>
+    </div>
+    {% endif %}
+
+
+    <!-- offeree table -->
+    {% if offeree == 1 %}
+    <div class="row">
+      <div class="12u">
+        <section class="box">
+          <div class="table-wrapper">
+
+            <label><h3>Passenger</h3></label>
+            <table>
+              <thead align="center">
+                <tr >
+                  <th>Date</th> <th>Distance</th> <th>Pickup</th> <th>Destination</th> <th>Rating</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in data[1] %}
+                <tr>
+                  <td style="width:15%;">{{ item[1] }}</td>
+                  <td style="width:10%;">{{ item[2] }}</td>
+                  <td style="width:30%;">{{ item[3] }}</td>
+                  <td style="width:30%;">{{ item[4] }}</td>
+                  <td style="width:15%;">
+                    {{_self.showRating(item[5], item[0])}}
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+
+            </table>
+
+          </div>
+        </section>
+      </div>
+    </div>
+    {% endif %}
+
+
+    <!-- button save rating values -->
+    <td colspan="5"><input type="hidden" id="myrides_save" name="myrides_save" value="Save" class= "button button-size-1 form-center button-right" /></td>
+  
+
+  </form>
+</section>
+
+{% endblock %}

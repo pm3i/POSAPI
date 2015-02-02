@@ -1,0 +1,169 @@
+ body {
+	background: #fafafa url('../images/noise-diagonal.png');
+	color: #444;
+	font: 100%/30px 'Helvetica Neue', helvetica, arial, sans-serif;
+	text-shadow: 0 1px 0 #fff;
+}
+
+strong {
+	font-weight: bold; 
+}
+
+em {
+	font-style: italic; 
+}
+
+table {
+	background: #f5f5f5;
+	border-collapse: separate;
+	box-shadow: inset 0 1px 0 #fff;
+	font-size: 12px;
+	line-height: 24px;
+	margin: 30px auto;
+	text-align: left;
+	width: 800px;
+}	
+
+th {
+	background: url('../images/noise-diagonal.png'), linear-gradient(#6D5C87, #9686AD);
+	
+	border-left: 1px solid #555;
+	border-right: 1px solid #777;
+	border-top: 1px solid #555;
+	border-bottom: 1px solid #333;
+	box-shadow: inset 0 1px 0 #999;
+	color: #fff;
+  font-weight: bold;
+	padding: 10px 15px;
+	text-shadow: 0 1px 0 #000;	
+}
+
+th:after {
+	background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.08));
+	content: '';
+	display: block;
+	height: 25%;
+	left: 0;
+	margin: 1px 0 0 0;
+	position: absolute;
+	top: 25%;
+	width: 100%;
+}
+
+th:first-child {
+	border-left: 1px solid #777;	
+	box-shadow: inset 1px 1px 0 #999;
+}
+
+th:last-child {
+	box-shadow: inset -1px 1px 0 #999;
+}
+
+td {
+	
+	border-top: 1px solid #bdbdbd;
+	border-right: 1px dotted #bdbdbd;
+	padding: 10px 15px;
+	position: relative;
+	transition: all 300ms;
+	color: #3b3b3b;
+
+
+}
+
+td:first-child {
+	border-left: 1px solid #bdbdbd;
+}	
+
+td:last-child {
+	border-right: 1px solid #bdbdbd;
+}	
+
+tr {
+	background-color: #d0d0d0;
+  background-image: linear-gradient(bottom, #f0f0f0 0%, #f7f7f7 100%);
+  background-image: -o-linear-gradient(bottom, #f0f0f0 0%, #f7f7f7 100%);
+  background-image: -moz-linear-gradient(bottom, #f0f0f0 0%, #f7f7f7 100%);
+  background-image: -webkit-linear-gradient(bottom, #f0f0f0 0%, #f7f7f7 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd0d0d0', endColorstr='#ffffffff',GradientType=0);
+  /* IE6-9 */
+  border: none;
+  text-align: left;
+  border: 1px solid #e8e8e8;
+  color: #3b3b3b;
+}
+
+tr:nth-child(odd) td {
+	
+}
+
+tr:last-of-type td {
+	border-bottom: 1px solid #bdbdbd;
+}
+
+tr:last-of-type td:first-child {
+	border-left: 1px solid #bdbdbd;
+}	
+
+tr:last-of-type td:last-child {
+	border-right: 1px solid #bdbdbd;
+}	
+
+tbody:hover td {
+	background-color: #d0d0d0;
+  background-image: linear-gradient(bottom, #f0f0f0 0%, #f7f7f7 100%);
+  background-image: -o-linear-gradient(bottom, #f0f0f0 0%, #f7f7f7 100%);
+  background-image: -moz-linear-gradient(bottom, #f0f0f0 0%, #f7f7f7 100%);
+  background-image: -webkit-linear-gradient(bottom, #f0f0f0 0%, #f7f7f7 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd0d0d0', endColorstr='#ffffffff',GradientType=0);
+  border: none;
+  text-align: left;
+  border-top: 1px solid #bdbdbd;
+  border-right: 1px dotted #bdbdbd;
+  	color: #3b3b3b;		
+	
+}
+
+tbody:hover td:last-child {
+  border-right: 1px solid #bdbdbd;
+}
+
+tbody:hover td:first-child {
+  border-left: 1px solid #bdbdbd;
+}
+
+tbody:hover tr:hover td {
+  background-color: #d0d0d0;
+  background-image: linear-gradient(bottom, #e0e0e0 0%, #e7e7e7 100%);
+  background-image: -o-linear-gradient(bottom, #e0e0e0 0%, #e7e7e7 100%);
+  background-image: -moz-linear-gradient(bottom, #e0e0e0 0%, #e7e7e7 100%);
+  background-image: -webkit-linear-gradient(bottom, #e0e0e0 0%, #e7e7e7 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd0d0d0', endColorstr='#ffffffff',GradientType=0);
+  border: none;
+  text-align: left;
+  border-top: 1px solid #bdbdbd;
+  border-right: 1px dotted #bdbdbd;
+  color: #3b3b3b;
+}
+
+tbody:hover tr:hover td:last-child{
+  border-right: 1px solid #bdbdbd;
+}
+
+tbody:hover tr:hover td:first-child{
+  border-left: 1px solid #bdbdbd;
+}
+
+.th {
+	background: url('../images/noise-diagonal.png'), linear-gradient(#6D5C87, #9686AD);
+	
+	border-left: 1px solid #555;
+	border-right: 1px solid #777;
+	border-top: 1px solid #555;
+	border-bottom: 1px solid #333;
+	box-shadow: inset 0 1px 0 #999;
+	color: #fff;
+  	font-weight: bold;
+	padding: 10px 15px;
+	text-shadow: 0 1px 0 #000;	
+}

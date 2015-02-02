@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest" file="D:\IIIAND9\Prject\HEYAUTO\dev-php\heyAUTO_RESTService\src\heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest.php" namespace="heyAuto\DemoBundle\Tests\Controller" fullPackage="heyAuto.DemoBundle.Tests.Controller" tests="6" assertions="7" failures="1" errors="1" time="35.274017">
+    <testcase name="testHome" class="heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest" file="D:\IIIAND9\Prject\HEYAUTO\dev-php\heyAUTO_RESTService\src\heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest.php" line="23" assertions="1" time="9.728557"/>
+    <testcase name="testHome2" class="heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest" file="D:\IIIAND9\Prject\HEYAUTO\dev-php\heyAUTO_RESTService\src\heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest.php" line="29" assertions="1" time="5.413309"/>
+    <testcase name="testLogIn" class="heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest" file="D:\IIIAND9\Prject\HEYAUTO\dev-php\heyAUTO_RESTService\src\heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest.php" line="39" assertions="3" time="6.672381"/>
+    <testcase name="testProfilePage" class="heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest" file="D:\IIIAND9\Prject\HEYAUTO\dev-php\heyAUTO_RESTService\src\heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest.php" line="56" assertions="1" time="3.428196">
+      <failure type="PHPUnit_Framework_ExpectationFailedException">heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest::testProfilePage
+Failed asserting that false is true.
+
+D:\IIIAND9\Prject\HEYAUTO\dev-php\heyAUTO_RESTService\src\heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest.php:62
+</failure>
+    </testcase>
+    <testcase name="testProfileUpdate" class="heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest" file="D:\IIIAND9\Prject\HEYAUTO\dev-php\heyAUTO_RESTService\src\heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest.php" line="77" assertions="0" time="5.324305">
+      <error type="InvalidArgumentException">heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest::testProfileUpdate
+InvalidArgumentException: Unreachable field "user_type"
+
+D:\IIIAND9\Prject\HEYAUTO\dev-php\heyAUTO_RESTService\vendor\symfony\symfony\src\Symfony\Component\DomCrawler\FormFieldRegistry.php:89
+D:\IIIAND9\Prject\HEYAUTO\dev-php\heyAUTO_RESTService\vendor\symfony\symfony\src\Symfony\Component\DomCrawler\FormFieldRegistry.php:126
+D:\IIIAND9\Prject\HEYAUTO\dev-php\heyAUTO_RESTService\vendor\symfony\symfony\src\Symfony\Component\DomCrawler\Form.php:334
+D:\IIIAND9\Prject\HEYAUTO\dev-php\heyAUTO_RESTService\src\heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest.php:100
+</error>
+    </testcase>
+    <testcase name="testTrue" class="heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest" file="D:\IIIAND9\Prject\HEYAUTO\dev-php\heyAUTO_RESTService\src\heyAuto\DemoBundle\Tests\Controller\WebsiteControllerTest.php" line="38" assertions="1" time="4.707269"/>
+  </testsuite>
+</testsuites>

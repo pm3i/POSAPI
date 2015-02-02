@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<!--
+  Alpha by HTML5 UP
+  html5up.net | @n33co
+  Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="heyauto hey-auto hey auto" />
+    <meta name="keywords" content="heyauto hey-auto hey auto" />
+    {% image '@heyAutoDemoBundle/Resources/public/images/heyauto-logo.png' %}
+            <link rel='shortcut icon' href='{{ asset_url }}' />
+    {% endimage %}
+    {# <!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]--> #}
+    <script src="{{ asset('bundles/heyautodemo/js/template2/jquery.min.js') }}"             type="text/javascript" ></script>
+    <script src="{{ asset('bundles/heyautodemo/js/template2/jquery.dropotron.min.js') }}"   type="text/javascript" ></script>
+    <script src="{{ asset('bundles/heyautodemo/js/template2/jquery.scrollgress.min.js') }}" type="text/javascript" ></script>
+    <script src="{{ asset('bundles/heyautodemo/js/template2/skel.min.js') }}"               type="text/javascript" ></script>
+    <script src="{{ asset('bundles/heyautodemo/js/template2/skel-layers.min.js') }}"        type="text/javascript" ></script>
+    <script src="{{ asset('bundles/heyautodemo/js/template2/init.js') }}"                   type="text/javascript" ></script>
+    {# <!-- CSS --> #}
+    <link href="{{ asset('bundles/heyautodemo/css/template2/skel.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('bundles/heyautodemo/css/template2/style.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('bundles/heyautodemo/css/template2/style-wide.css') }}" rel="stylesheet" type="text/css" />
+    {# <!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]--> #}
+    {# <!-- more css here -->     #}
+    {% block stylesheets  %} {% endblock %}
+    {# <!-- more script here -->  #}
+    {% block javascript   %} {% endblock %}
+  </head>
+
+  <body>
+    <!-- Header -->
+    {% include 'heyAutoDemoBundle:Templates:template_2_header.html.twig' %}
+
+
+    <!-- Main Body -->
+    {% block body %}{% endblock %}
+      
+
+    <!-- Footer -->
+    {% include 'heyAutoDemoBundle:Templates:template_2_footer.html.twig' %}
+
+  </body>
+</html>
+

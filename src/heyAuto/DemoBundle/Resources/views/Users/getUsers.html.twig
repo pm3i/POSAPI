@@ -1,0 +1,24 @@
+<h1>List of users</h1>
+
+<table>
+  <tr style='background-color: #9ECAF3'>
+    <th>id</th>
+    <th>user name</th>
+    <th>password</th>
+    <th>email</th>
+    <th>phone no.</th>
+    <th>latitude</th>
+    <th>longitude</th>
+  </tr>
+  {% for user in users %}
+  <tr style='background-color: #E6E0B8'>
+    <td>{{ user.id }}</td>
+    <td>{{ user.username }}</td>
+    <td>{{ user.password }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.phoneNo }}</td>
+    <td>{{ user.currentlocLat }}</td>
+    <td>{{ user.currentlocLng }}</td>
+  </tr>
+    {% endfor %}
+</table>

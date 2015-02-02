@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <link href="{{ asset('bundles/heyautodemo/css/template1/animate.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('bundles/heyautodemo/css/template1/styles.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('bundles/heyautodemo/css/template1/reset.css') }}" rel="stylesheet" type="text/css" />
+    {% image '@heyAutoDemoBundle/Resources/public/images/heyauto-logo.png' %}
+            <link rel='shortcut icon' href='{{ asset_url }}' />
+    {% endimage %}
+    {% block stylesheets %}{% endblock %}
+    {% block javascript %}{% endblock %}
+  </head>
+  <body>
+    {% block body %}{% endblock %}
+  </body>
+</html>
+

@@ -1,0 +1,245 @@
+{#  {% extends 'heyAutoDemoBundle:Templates:base.html.twig' %} #}
+{% extends 'heyAutoDemoBundle:Templates:template_2_base.html.twig' %}
+
+
+{% block title %} {{ app.session.get('_security.last_username') }} {% endblock %}
+
+
+
+{% block stylesheets %}
+	<style>
+		.user-picture {
+			width: 96px;
+			height: 96px;
+			border-radius: 50%; /*the magic*/
+			float: left;
+		}
+		.taxi-picture {
+			width: 150px;
+			height: 106px;
+			float: left;
+		}
+		.button-right {
+			float:right; 
+			margin: 10px;
+		}
+	</style>
+{% endblock %}
+
+
+
+{% block javascript %}
+	
+	<script>
+
+		$(document).ready(function() {
+		    
+		    $("#uploadIconCar").click(function(){
+		       $(this).next().trigger('click');
+		    });
+
+		    $("#uploadIconProfile").bind("click",function() {
+
+		         $("#ProfileImgToUpload").trigger('click');
+
+		    });
+
+		    /*$(".button-right").click(function(){
+		       setTimeout( "refresh()", 2*1000 );
+		        //<meta http-equiv="refresh" content="0" >
+		    });*/
+
+		    
+		});
+		function readURLProfile(input) {
+	        if (input.files && input.files[0]) {
+	            var reader = new FileReader();
+
+	            reader.onload = function (e) {
+	                $('#iconUser')
+	                    .attr('src', e.target.result)
+	                    .width(96)
+	                    .height(96);
+	            };
+
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+
+	   
+	    /*function refresh()
+		{
+		    //  This version of the refresh function will cause a new
+		    //  entry in the visitor's history.  It is provided for
+		    //  those browsers that only support JavaScript 1.0.
+		    //
+		    location.reload(true);
+		}*/
+
+	    function readURLCar(input) {
+	        if (input.files && input.files[0]) {
+	            var reader = new FileReader();
+
+	            reader.onload = function (e) {
+	                $('#iconCar')
+	                    .attr('src', e.target.result)
+	                    .width(150)
+	                    .height(106);
+	            };
+
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	        
+	    }
+
+	         
+    </script>
+{% endblock %}
+
+
+
+{% block body %}
+
+<section id="main" class="container">
+<h2><b>{{ app.session.get('_security.last_username') }} 's Profile</b></h2>
+
+	<form action="{{ path('account') }}" method="POST" enctype="multipart/form-data">
+	{#{ form_start(form, { atrr: { novalidate : 'novalidate' }} ) }#}
+	<div class="row">
+		<div class="12u">
+			<section class="box">
+				<input id="ProfileImgToUpload" name="ProfileImgToUpload" type="file" onchange="readURLProfile(this);" style="visibility: hidden;" />
+		     	<!-- circle user image -->
+					<a href="javascript:void(0)" id="uploadIconProfile" href="">
+			        	<img id="iconUser" src="../images/profile/{{mId}}.jpg?=<?=rand(1,32000)?>" class="user-picture" />
+			        </a>
+		     	<div lass="row uniform 50%">
+		     		<!-- username -->
+		     		<h3 class="6u 12u(3) form-center">Personal Information</h3>
+					<!-- fullname -->
+					<div class="6u 12u(3) form-center">
+						{% set fullnameplaceholder = 'full name'|trans %}
+						{{ form_widget (form.fullName, { 'attr': {'class' : 'class-css-here', 'placeholder' : fullnameplaceholder }} ) }}
+					</div>
+					<!-- password -->
+					<div class="6u 12u(3) form-center">
+						{% set passwordplaceholder = 'password'|trans %}
+						{{ form_widget (form.password.pass, { 'attr': {'class' : 'class-css-here', 'placeholder' : passwordplaceholder }} ) }}
+					</div>
+					<!-- repeat password -->
+					<div class="6u 12u(3) form-center">
+						{% set repasswordplaceholder = 'confirm password'|trans %}
+						{{ form_widget (form.password.confirm, { 'attr': {'class' : 'class-css-here', 'placeholder' : repasswordplaceholder }} ) }}
+					</div>
+					<!-- email -->
+					<div class="6u 12u(3) form-center">
+						{% set emailplaceholder = 'email'|trans %}
+						{{ form_widget (form.email, { 'attr': {'class' : 'class-css-here', 'placeholder' : emailplaceholder }} ) }}
+					</div>
+					<!-- phone number -->
+					<div class="6u 12u(3) form-center">
+						{% set phonenoplaceholder = 'phone no'|trans %}
+						{{ form_widget (form.phoneNo, { 'attr': {'class' : 'class-css-here', 'placeholder' : phonenoplaceholder }} ) }}
+					</div>
+					<!-- sex -->
+					{#
+					<div class="6u 12u(3) form-center">
+						{% set genderplaceholder = 'sex'|trans %}
+						{{ form_widget (form.gender, { 'attr': {'class' : 'class-css-here', 'placeholder' : genderplaceholder }} ) }}
+					</div>
+					#}
+					<div class="6u 12u(3) form-center">
+						{% if mGender == "1" %}
+							<input type="radio" id="user_gender_male" name="user_gender" value="1" checked>
+							<label for="user_gender_male">Male</label>
+							<input type="radio" id="user_gender_female" name="user_gender" value="2" >
+							<label for="user_gender_female">Female</label>
+						{% else %}
+							<input type="radio" id="user_gender_male" name="user_gender" value="1" >
+							<label for="user_gender_male">Male</label>
+							<input type="radio" id="user_gender_female" name="user_gender" value="2" checked>
+							<label for="user_gender_female">Female</label>
+						{% endif %}
+		            </div>
+					<!-- birth year -->
+					<div class="6u 12u(3) form-center">
+						{% set birthyearplaceholder = 'birth year'|trans %}
+						{{ form_widget (form.birthYear, { 'attr': {'class' : 'class-css-here', 'placeholder' : birthyearplaceholder }} ) }}
+					</div>
+
+				</div>
+
+			</section>
+		</div>
+	</div>
+
+
+	<!-- macro draw each vehicle -->
+	{% macro prototype(vehicle) %}
+        <div class="6u 12u(3) form-center">
+        	{% set makeplaceholder = 'make'|trans %}
+        	{{form_widget(vehicle.make, 			{ 'attr': {'class' : 'class-css-here', 'placeholder' : makeplaceholder }} ) }} 
+        </div>
+        <div class="6u 12u(3) form-center">
+        	{% set modelplaceholder = 'model'|trans %}
+        	{{form_widget(vehicle.model, 			{ 'attr': {'class' : 'class-css-here', 'placeholder' : modelplaceholder }} ) }} 
+        </div>
+        <div class="6u 12u(3) form-center">
+        	{% set colorplaceholder = 'color'|trans %}
+        	{{form_widget(vehicle.color, 			{ 'attr': {'class' : 'class-css-here', 'placeholder' : colorplaceholder }} ) }} 
+        </div>
+        <div class="6u 12u(3) form-center">
+        	{% set yearplaceholder = 'year'|trans %}
+        	{{form_widget(vehicle.year, 			{ 'attr': {'class' : 'class-css-here', 'placeholder' : yearplaceholder }} ) }} 
+        </div>
+        <div class="6u 12u(3) form-center">
+        	{% set registrationNoplaceholder = 'registration no'|trans %}
+        	{{form_widget(vehicle.registrationNo, 	{ 'attr': {'class' : 'class-css-here', 'placeholder' : registrationNoplaceholder }} ) }} 
+        </div>
+        {#<td><ul><li><a href="#">Add</a></li><li><a href="#">Remove</a></li></ul>#}
+ 	{% endmacro %}
+
+	
+
+    <!-- list all vehicles of user -->
+  
+	{% for vehicle in form.vehicles %}
+    	<div class="row">
+			<div class="12u">
+				<section class="box">
+					<!-- circle taxi image -->
+				    	<a href="javascript:void(0)" id="uploadIconCar" href="">
+				       		<img id="iconCar" src="../images/car/{{mId}}.jpg?=<?=Date('U')?>" class="taxi-picture" />
+				        </a>
+				    <input id="CarImgToUpload" name="CarImgToUpload" type='file' 
+				    	   onchange="readURLCar(this);" style="visibility : hidden;" />
+
+				    <!-- info of each vehicle -->
+		    		<div lass="row uniform 50%"> 
+		     			<h3 class="6u 12u(3) form-center">Vehicle Information</h3>
+		    			{{_self.prototype(vehicle) }} 
+		    		</div>
+	    		</section>
+			</div>
+		</div>
+	{% endfor %}
+
+    <!-- button save -->
+    <div class="button-right" >
+		<div class="">
+			<ul class="actions" >
+				<li>{{ form_row (form.save, { 'attr' : {class: 'button special button-size-1 form-center' }, 'label': 'Save' } )}}</li>
+			</ul>
+		</div>
+	</div>
+
+	  
+	{#{ form_end(form) }#}
+	</form>
+
+
+
+
+</section>
+
+{% endblock %}

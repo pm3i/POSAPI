@@ -1,0 +1,61 @@
+{#  {% extends 'heyAutoDemoBundle:Templates:base.html.twig' %} #}
+{% extends 'heyAutoDemoBundle:Templates:template_2_base.html.twig' %}
+
+
+
+{% block title %} SIGN IN {% endblock %}
+
+
+
+{% block stylesheets %}
+	<style>
+		.button-right {
+			float:right; 
+			margin: -10px auto;
+		}
+	</style>
+{% endblock %}
+
+
+
+{% block javascript %}
+{% endblock %}
+
+
+
+{% block body %}
+<section id="main" class="container">
+
+
+{{ form_start(form, {atrr: {novalidate : 'novalidate'}}) }}
+	<div class="row">
+		<div class="12u">
+			<section class="box">
+
+					<div lass="row uniform 50%">
+						<div class="6u 12u(3) form-center">
+							{% set usernameplaceholder = 'user name'|trans %}
+							{{ form_widget (form.username, { 'attr': {'class' : 'class-css-here', 'placeholder' : usernameplaceholder }} ) }}
+						</div>
+						<div class="6u 12u(3) form-center">
+							{% set passwordplaceholder = 'password'|trans %}
+							{{ form_widget (form.password, { attr: {'class' : 'class-css-here', 'placeholder' : passwordplaceholder }} ) }}
+						</div>
+					</div>
+
+					<div class="button-right">
+						<div class="">
+							<ul class="actions">
+								<li>{{ form_row (form.login, { 'attr' : {class: 'button special button-size-1 form-center' }, 'label': 'Login'} )}}</li>
+							</ul>
+						</div>
+					</div>
+
+			</section>
+		</div>
+	</div>
+{{ form_end(form) }}
+
+
+</section>
+{% endblock %}

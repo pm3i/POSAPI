@@ -1,0 +1,33 @@
+<header id="header" class="skel-layers-fixed">
+  <h1><a href="{{ path('home') }}">HEY</a> AUTO </h1>
+  <nav id="nav">
+    <ul>
+      <li><a href="{{ path('home') }}">Home</a></li>
+      <li>
+        <a href="" class="icon fa-angle-down">Menu</a>
+        <ul>
+          <li><a href="{{ path('account') }}">Account Info</a></li>
+          <li><a href="{{ path('rides') }}">Rides</a></li>
+          <li>
+            <a href="">Submenu</a>
+            <ul>
+              <li><a href="#">Option One</a></li>
+              <li><a href="#">Option Two</a></li>
+              <li><a href="#">Option Three</a></li>
+              <li><a href="#">Option Four</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li> 
+        {% if app.session.get('_security.last_username') != null %}
+          <a href="{{ path('account') }}" class="set-some-style-here">{{ app.session.get('_security.last_username') }}</a>
+          <a href="{{ path('signout') }}" class="button">Sign out</a>
+        {% else %}
+          <a href="{{ path('signin')  }}" class="button">Sign in</a>
+        {% endif %}
+      </li>
+      {# <!-- <li><a href="#" class="button">Sign Up</a></li> --> #}
+    </ul>
+  </nav>
+</header>

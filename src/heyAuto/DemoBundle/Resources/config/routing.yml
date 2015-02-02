@@ -1,0 +1,15 @@
+home:
+    path:     /home
+    defaults: { _controller: heyAutoDemoBundle:Website:home }
+account:
+    path:     /account
+    defaults: { _controller: heyAutoDemoBundle:Website:account }
+signin:
+    pattern:  /signin
+    defaults: { _controller: heyAutoDemoBundle:Website:signin }
+signout:
+    path:     /signout
+    defaults: { _controller: heyAutoDemoBundle:Website:signout }
+rides:
+    path:     /rides
+    defaults: { _controller: heyAutoDemoBundle:Website:myRides }

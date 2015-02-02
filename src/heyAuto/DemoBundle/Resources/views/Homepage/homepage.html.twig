@@ -1,0 +1,107 @@
+{#  {% extends 'heyAutoDemoBundle:Templates:base.html.twig' %} #}
+{% extends 'heyAutoDemoBundle:Templates:template_2_base.html.twig' %}
+
+
+
+{% block title %} HOMEPAGE {% endblock %}
+
+
+
+{% block stylesheets %}
+  <style>
+    #map-canvas {
+      height: 500px;
+      width: 800px;
+      margin: auto;
+      padding: 0px
+    }
+  </style>
+{% endblock %}
+
+
+
+{% block javascript %}
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+  <script>
+     
+    var map;
+    var infowindow;
+    
+    var drivers = new Array();
+    var i = 0;
+    var myLatlng ;
+    var mapOptions;
+    
+    {% for user in users %}
+        var u = new Array();
+        u[0] = {{user.getId()}}
+        u[1] = {{user.getCurrentLocLat()}}
+        u[2] = {{user.getCurrentLocLng()}}
+        u[3] = {{user.getPhoneNo()}}
+        drivers[i++] = u 
+    {% endfor %}
+            
+
+    function initialize() {
+      map = new google.maps.Map(document.getElementById('map-canvas'), {
+        zoom: 12,
+        center: new google.maps.LatLng(drivers[3][1], drivers[3][2]),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      infowindow = new google.maps.InfoWindow();
+
+      var marker, i;
+      var pinIcon = new google.maps.MarkerImage(
+          {% image '@heyAutoDemoBundle/Resources/public/images/ic_taxi_driver.png' %}
+            '{{ asset_url }}'
+          {% endimage %},
+          null, /* size is determined at runtime */
+          null, /* origin is 0,0 */
+          null, /* anchor is bottom center of the scaled image */
+          new google.maps.Size(32, 32)
+      );      
+      for (i = 0; i < drivers.length; i++) {  
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(drivers[i][1], drivers[i][2]),
+          map: map,
+          icon: pinIcon
+        });
+
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+          return function() {
+            infowindow.setContent(drivers[i][3]);
+            infowindow.open(map, marker);
+          }
+        })(marker, i));
+      }
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+  </script>
+{% endblock %}
+
+
+
+{% block endheader %}
+  
+{% endblock %}
+
+
+
+{% block body %}
+  
+  <section id="main" class="container">
+
+    <div class="row">
+      <div class="12u">
+        <section class="box">
+          <div id="map-canvas"></div>
+        </section>
+      </div>
+    </div>
+
+  </section>
+
+{% endblock %}
