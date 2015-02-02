@@ -41,13 +41,13 @@ class PosUserController extends Controller {
 	 * @return JsonResponse
 	 * @Get("/rest/posuser")
 	 *
-	 * GET VEHICLES LIST
+	 * Check login User
 	 * ---------------
 	 * Request parameters:
 	 *
 	 *
 	 */
-	public function getUserIdTitleJsonAction(Request $request) {
+	public function checkLoginJsonAction(Request $request) {
 		
 		//$vehicles = $this->getDoctrine()->getRepository ( 'heyAutoDemoBundle:PosUsers' )->findAll();
 		$mUsername='adminsg';
@@ -159,6 +159,7 @@ class PosUserController extends Controller {
 		$response->setData($responseMsg2);
 		return $response;
 	}
+	
 	public function date_normalizer($d){ 
 		if($d instanceof DateTime){
 			 return $d->getTimestamp(); 
@@ -220,6 +221,7 @@ class PosUserController extends Controller {
 	public function getAllPosStagesJsonAction(Request $request) {
 
 		$posstages = $this->getDoctrine ()->getRepository ( 'heyAutoDemoBundle:PosStage' )->findAll ();
+		
 
 		$resultJson = null;
 		foreach($posstages as $posstage) {			
