@@ -10,8 +10,6 @@ hey_auto_demo:
 users:
     type:      rest
     resource:  heyAuto\DemoBundle\Controller\UsersController
-
-fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
 fos_user_profile:
@@ -30,7 +28,9 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
 
-
+posstages:
+    type:      rest
+    resource:  heyAuto\DemoBundle\Controller\PosStagesController
 
 #default:
 #    type:      rest

@@ -41,13 +41,13 @@ class PosUserController extends Controller {
 	 * @return JsonResponse
 	 * @Get("/rest/posuser")
 	 *
-	 * GET VEHICLES LIST
+	 * Check login User
 	 * ---------------
 	 * Request parameters:
 	 *
 	 *
 	 */
-	public function getUserIdTitleJsonAction(Request $request) {
+	public function checkLoginJsonAction(Request $request) {
 		
 		//$vehicles = $this->getDoctrine()->getRepository ( 'heyAutoDemoBundle:PosUsers' )->findAll();
 		$mUsername='adminsg';
@@ -159,6 +159,7 @@ class PosUserController extends Controller {
 		$response->setData($responseMsg2);
 		return $response;
 	}
+	
 	public function date_normalizer($d){ 
 		if($d instanceof DateTime){
 			 return $d->getTimestamp(); 
@@ -211,7 +212,7 @@ class PosUserController extends Controller {
 	 * @return JsonResponse
 	 * @Get("/rest/allPosstages")
 	 *
-	 * GET POSCOMPANYS LIST
+	 * GET POSSTAGES LIST
 	 * ---------------
 	 * Request parameters:
 	 *
@@ -220,6 +221,7 @@ class PosUserController extends Controller {
 	public function getAllPosStagesJsonAction(Request $request) {
 
 		$posstages = $this->getDoctrine ()->getRepository ( 'heyAutoDemoBundle:PosStage' )->findAll ();
+		
 
 		$resultJson = null;
 		foreach($posstages as $posstage) {			
@@ -231,21 +233,19 @@ class PosUserController extends Controller {
 		return $response;
 	}
 	
-
+	//find pos_stage Online
 	/**
 	 * @param PosStage $posstage
 	 * @return JsonResponse
 	 * GET POSSTAGE
-	 * @Get("/rest/posstages")
+	 * @Get("/rest/posstagesonline")
 	 **/
 	public function getPosStagesJsonAction(Request $request) {
 
-		$logger = $this->get('logger');
 		$response = new JsonResponse();
 		$posstages = $this->getDoctrine ()->getRepository ( 'heyAutoDemoBundle:PosStage' )->findStagebyStatus (1);
-		//$logger->debug(">>>>>>>>>>>>>>>>>>:" . print_r($posstages));
 		$resultJson = null;
-		// echo count($posstages);
+
 		foreach($posstages as $posstage) {
 
 			$resultJson[] = $posstage->toArray(1);

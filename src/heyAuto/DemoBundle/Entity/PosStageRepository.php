@@ -3,6 +3,9 @@
 namespace heyAuto\DemoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use heyAuto\DemoBundle\Entity\PosStage;
+use Symfony\Component\Validator\Constraints\EqualTo;
+use Monolog\Logger;
 
 /**
  * PosStageRepository
@@ -12,7 +15,50 @@ use Doctrine\ORM\EntityRepository;
  */
 class PosStageRepository extends EntityRepository
 {
+	//find PosStage by status
 	public function findStagebyStatus($status) {
 		return $this->findBy(array('status' => $status));
 	}
+
+	//find PosStage by description
+	public function findPosStageByDescription($description) {
+		return $this->findBy(array('description' => $description));
+	}
+
+	//find PosStage by code
+	public function findPosStageByCode($code) {
+		return $this->findBy(array('code' => $code));
+	}
+
+	//find PosStage by user_id
+	public function findPosStageByUserId($userId) {
+		return $this->findBy(array('user_id' => $userId));
+	}
+
+	public function updatePosStage(PosStage $posStage) {
+
+		$manager = $this->getEntityManager();
+		$manager->merge($posStage);
+		$manager->flush();
+
+		return array (
+						'mSuccess' => true,
+						'mErrorField' => null,
+						'mMessage' => "PosStage updated successfully"
+				);
+		
+	}
+
+	public function deletePosStage($id) {
+		$this->getEntityManager()
+		->createQuery(
+				" DELETE FROM heyAutoDemoBundle:PosStage st WHERE st.id = '".$id."' "
+		)->getResult();
+		return array (
+						'mSuccess' => true,
+						'mErrorField' => null,
+						'mMessage' => "PosStage delete successfully"
+				);
+	}
+
 }
