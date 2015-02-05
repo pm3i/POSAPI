@@ -15,148 +15,145 @@ class PosInvoice
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="inv_id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="inv_id", type="integer")
      */
     private $inv_id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="inv_code", type="string", length=2000)
+     * @ORM\Column(name="inv_code", type="string", length=2000, nullable=true)
      */
     private $inv_code;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="total", type="float", length=53)
+     * @ORM\Column(name="total", type="float", length=53, nullable=true)
      */
     private $total;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="cost", type="float", length=53)
+     * @ORM\Column(name="cost", type="float", length=53, nullable=true)
      */
     private $cost;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="vat", type="float", length=53)
+     * @ORM\Column(name="vat", type="float", length=53, nullable=true)
      */
     private $vat;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="commision", type="float", length=53)
+     * @ORM\Column(name="commision", type="float", length=53, nullable=true)
      */
     private $commision;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="inv_endtime", type="string", length=500)
+     * @ORM\Column(name="inv_endtime", type="string", length=500, nullable=true)
      */
     private $inv_endtime;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="inv_starttime", type="string", length=500)
+     * @ORM\Column(name="inv_starttime", type="string", length=500, nullable=true)
      */
     private $inv_starttime;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="user_id", type="integer")
+     * @ORM\Column(name="user_id", type="integer", nullable=true)
      */
     private $user_id;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="status", type="integer")
+     * @ORM\Column(name="status", type="integer", nullable=true)
      */
     private $status;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="inv_type", type="integer")
+     * @ORM\Column(name="inv_type", type="integer", nullable=true)
      */
     private $inv_type;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="inv_code_parent", type="string", length=2000)
+     * @ORM\Column(name="inv_code_parent", type="string", length=2000, nullable=true)
      */
     private $inv_code_parent;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="printStatus", type="integer")
+     * @ORM\Column(name="printStatus", type="integer", nullable=true)
      */
     private $printStatus;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="inv_salesoff", type="float", length=53)
+     * @ORM\Column(name="inv_salesoff", type="float", length=53, nullable=true)
      */
     private $inv_salesoff;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="inv_arise", type="float", length=53)
+     * @ORM\Column(name="inv_arise", type="float", length=53, nullable=true)
      */
     private $inv_arise;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="arise_comment", type="string", length=100)
+     * @ORM\Column(name="arise_comment", type="string", length=100, nullable=true)
      */
     private $arise_comment;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="client_id", type="integer")
+     * @ORM\Column(name="client_id", type="integer", nullable=true)
      */
     private $client_id;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="pay_cost", type="float", length=53)
+     * @ORM\Column(name="pay_cost", type="float", length=53, nullable=true)
      */
     private $pay_cost;
 
-
     /**
-     * Get id
+     * @var string
      *
-     * @return integer 
+     * @ORM\Column(name="company_code", type="string", length=255, nullable=true)
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $company_code;
+
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="repayment_date", type="string", length=500, nullable=true)
+     */
+    private $repayment_date;
+
 
     /**
      * Set inv_id
@@ -202,6 +199,29 @@ class PosInvoice
     public function getInvCode()
     {
         return $this->inv_code;
+    }
+
+    /**
+     * Set repayment_date
+     *
+     * @param string $repayment_date
+     * @return PosInvoice
+     */
+    public function setRepaymentDate($repayment_date)
+    {
+        $this->repayment_date = $repayment_date;
+
+        return $this;
+    }
+
+    /**
+     * Get repayment_date
+     *
+     * @return string 
+     */
+    public function getRepaymentDate()
+    {
+        return $this->repayment_date;
     }
 
     /**
@@ -570,5 +590,28 @@ class PosInvoice
     public function getPayCost()
     {
         return $this->pay_cost;
+    }
+
+    /**
+     * Set company_code
+     *
+     * @param string $companyCode
+     * @return PosClient
+     */
+    public function setCompanyCode($companyCode)
+    {
+        $this->company_code = $companyCode;
+
+        return $this;
+    }
+
+    /**
+     * Get company_code
+     *
+     * @return string 
+     */
+    public function getCompanyCode()
+    {
+        return $this->company_code;
     }
 }

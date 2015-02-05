@@ -25,7 +25,6 @@ class PosItableRepository extends EntityRepository
 			array('code_table' => $code_table, 'company_code'=> $company_code)
 		);
 	}
-	
 	public function getItableByCompanyCode($companyCode) {
 		return $this->getEntityManager()
 		->createQuery(

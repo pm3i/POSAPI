@@ -31,7 +31,7 @@ class PosInvoiceItableRepository extends EntityRepository
 		
 	}
 
-	public function updateItable(PosInvoiceItable $posInvoiceItable) {
+	public function updateInvoiceItable(PosInvoiceItable $posInvoiceItable) {
 
 		$manager = $this->getEntityManager();
 		$manager->merge($posInvoiceItable);
@@ -42,6 +42,17 @@ class PosInvoiceItableRepository extends EntityRepository
 						'mErrorField' => null,
 						'mMessage' => "User updated successfully"
 				);
+		
+	}
+
+	public function getInvoiceItableHaveTableOnline($inv_code) {
+		return $this->getEntityManager()
+			->createQuery(
+					" SELECT pit FROM heyAutoDemoBundle:PosInvoiceItable pit
+						WHERE pit.inv_code = '".$inv_code."' 
+							  AND pit.status = 1
+					"
+			)->getResult();
 		
 	}
 

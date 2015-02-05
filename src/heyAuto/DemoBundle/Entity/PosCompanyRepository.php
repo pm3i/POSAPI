@@ -31,6 +31,10 @@ class PosCompanyRepository extends EntityRepository
 		return $this->getEntityManager()->getRepository('heyAutoDemoBundle:PosCompany')->findOneBy(array('company_code' => $companycode));
 	}
 
+	public function findAllCompanyByCompanyCode($companycode){
+		return $this->getEntityManager()->getRepository('heyAutoDemoBundle:PosCompany')->findBy(array('company_code' => $companycode));
+	}
+
 	public function createNewPosCompany(PosCompany $posCompany) 
 	{
 		

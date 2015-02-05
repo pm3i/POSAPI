@@ -36,4 +36,32 @@ class PosInvoiceRepository extends EntityRepository
 				"
 		)->getResult();
 	}
+
+	public function updateInvoiceByInvoiceCode(PosInvoice $posInvoice) {
+
+		$manager = $this->getEntityManager();
+		$manager->merge($posInvoice);
+		$manager->flush();
+
+		return array (
+						'mSuccess' => true,
+						'mErrorField' => null,
+						'mMessage' => "User updated successfully"
+				);
+		
+	}
+
+	public function findInvoiceIdByInvoiceCode($invCode, $companyCode)
+	{
+		// return $this->getEntityManager()->getRepository('heyAutoDemoBundle:PosInvoice')
+		// 	->findOneBy(array('inv_code' => $invCode, 'company_code' => $companyCode));
+		return $this->getEntityManager()
+		->createQuery(
+				" SELECT g
+					FROM heyAutoDemoBundle:PosInvoice g
+					WHERE g.inv_code = '".$invCode."' 
+					AND g.company_code = '".$companyCode."' 
+				"
+		)->getResult();
+	}
 }

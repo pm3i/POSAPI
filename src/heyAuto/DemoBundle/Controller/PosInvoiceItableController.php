@@ -80,7 +80,7 @@ class PosInvoiceItableController extends Controller {
 						$posInvoiceItable-> setCodeTable($code_table_get);
 						$posInvoiceItable-> setStatus(1);
 						$posInvoiceItableData = $this->getDoctrine()->getRepository('heyAutoDemoBundle:PosInvoiceItable')
-									->updateItable($posInvoiceItable);	
+									->updateInvoiceItable($posInvoiceItable);	
 					}
 					$result1 = 1;
 				} else {
@@ -97,7 +97,7 @@ class PosInvoiceItableController extends Controller {
 						$posItableOld-> setUpdateTime($now);
 
 						$posInvoiceItableData = $this->getDoctrine()->getRepository('heyAutoDemoBundle:PosITable')
-									->updateItable($posItableOld);	
+									->updateInvoiceItable($posItableOld);	
 					}
 					$result2 = 1;
 				}else {
@@ -113,7 +113,7 @@ class PosInvoiceItableController extends Controller {
 						$posItableNew-> setUpdateTime($now);
 
 						$posInvoiceItableData = $this->getDoctrine()->getRepository('heyAutoDemoBundle:PosITable')
-									->updateItable($posItableNew);	
+									->updateInvoiceItable($posItableNew);	
 					}
 					$result3 = 1;
 				}else {
