@@ -144,4 +144,29 @@ class PosItableRepository extends EntityRepository
 		}
 	}
 
+	public function updateStatusFlagForPosItable( $dateCurrent, $code_table, $companyCode){
+		 $sql = " UPDATE pos_itable SET status = '2', flag = '0', update_time = '".$dateCurrent."' 
+		 		  WHERE company_code = '".$companyCode."' 
+				  AND code_table='".$code_table."'
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		return $stmt->execute();
+	}
+
+	public function updateStatusFlagForPosItable2( $dateCurrent, $code_table, $companyCode, $status, $flag){
+		 $sql = " UPDATE pos_itable SET status = '".$status."', flag = '".$flag."', update_time = '".$dateCurrent."'
+						WHERE company_code = '".$companyCode."' AND code_table='".$code_table."'
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		return $stmt->execute();
+	}
+
+	public function updatePosItableForWSRemoveUpdateTable( $dateCurrent, $user_id, $code_table, $status){
+		 $sql = " UPDATE pos_itable SET status = '".$status."', update_time = '".$dateCurrent."', userid ='".$user_id."' 
+		 		  WHERE code_table = '".$code_table."'
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		return $stmt->execute();
+	}
+
 }

@@ -24,59 +24,61 @@ class PosInvoiceItable
     /**
      * @var string
      *
-     * @ORM\Column(name="inv_code", type="string", length=2000)
+     * @ORM\Column(name="inv_code", type="string", length=2000, nullable=true)
      */
     private $inv_code;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="code_table", type="string", length=250)
+     * @ORM\Column(name="code_table", type="string", length=250, nullable=true)
      */
     private $code_table;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="user_id", type="integer")
+     * @ORM\Column(name="user_id", type="integer", nullable=true)
      */
     private $user_id;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="status", type="integer")
+     * @ORM\Column(name="status", type="integer", nullable=true)
      */
     private $status;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="creattime", type="string", length=255)
+     * @ORM\Column(name="creattime", type="string", length=255, nullable=true)
      */
     private $creattime;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="action", type="string", length=1000)
+     * @ORM\Column(name="action", type="string", length=1000, nullable=true)
      */
     private $action;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="priority", type="string", length=2000)
+     * @ORM\Column(name="priority", type="string", length=2000, nullable=true)
      */
     private $priority;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="company_code", type="string", length=255)
+     * @ORM\Column(name="company_code", type="string", length=255, nullable=true)
      */
     private $company_code;
 
+
+   
 
     /**
      * Get id
@@ -271,6 +273,7 @@ class PosInvoiceItable
     {
         return $this->company_code;
     }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////
     

@@ -20,7 +20,20 @@ use Monolog\Logger;
  */
 class PosInvoiceDetailRepository extends EntityRepository
 {
+	public function findInvoiceDetailByInvoieCode($inv_code)
+	{
+		return $this->getEntityManager()
+		->createQuery(
+				"SELECT p FROM heyAutoDemoBundle:PosInvoiceDetail p WHERE p.inv_code= '".$inv_code."' "
+		)->getResult();
+	}
 
+	public function deleteInvoiceDetailByInvoieCode($inv_code)
+	{
+		$sql = "DELETE FROM pos_invoice_detail WHERE inv_code = '".$inv_code."' ";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		return $stmt->execute();
+	}
 
 	public function getInvoiceDetail($itemCostId, $company_code)
 	{
@@ -88,5 +101,57 @@ class PosInvoiceDetailRepository extends EntityRepository
 			);
 			
 		}
+	}
+
+	public function createPosInvoiceDetailReturn01(PosInvoiceDetail $posInvoiceDetail) 
+	{
+		
+		if($posInvoiceDetail == null) {
+			return 0;
+			
+		} else {
+			
+			$manager = $this->getEntityManager();
+			$manager->persist($posInvoiceDetail);
+			$manager->flush();
+			
+			return 1;
+			
+		}
+	}
+
+	public function getPriceInvoiceDetailWithDateNow($inv_code, $companyCode){
+		 $sql = "SELECT inv_d.item_id, inv_d.quantity, i_c_d.price
+				FROM pos_invoice_detail inv_d
+				INNER JOIN pos_items_cost_detail i_c_d ON i_c_d.item_id = inv_d.item_id
+				INNER JOIN pos_item_cost i_c ON i_c.id = i_c_d.items_cost_id
+				WHERE inv_d.company_code = '".$companyCode."' AND
+				inv_d.inv_code ='".$inv_code."' AND 
+				i_c.start_date < GETDATE()
+				AND GETDATE() < i_c.end_date
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+
+
+	public function getAllInvoiceDetail($itemCostId, $companyCode){
+		 $sql = "SELECT 
+				CAST(inv_code AS TEXT) AS inv_code, lng.lng_value,
+				CAST(descriptiON AS TEXT) AS descriptiON, inv.id, inv.invd_createtime,inv.invd_updatetime, inv.checked, inv.quantity,
+				it_c_d.price, inv.comment, inv.item_id
+				FROM pos_invoice_detail  inv   
+				INNER JOIN pos_items_cost_detail it_c_d ON it_c_d.items_cost_id = '".$itemCostId."'
+				INNER JOIN pos_items it ON it.item_id = it_c_d.item_id  
+				
+				INNER JOIN pos_language_item lng ON lng.item_id = it.item_id      
+						
+				where inv.company_code='".$companyCode."'
+				AND inv.item_id = it.item_id
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
 	}
 }

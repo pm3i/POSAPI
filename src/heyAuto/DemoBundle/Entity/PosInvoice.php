@@ -154,6 +154,12 @@ class PosInvoice
      */
     private $repayment_date;
 
+    /**
+     * @var string
+     *
+     */
+    private $code_table;
+
 
     /**
      * Set inv_id
@@ -614,4 +620,59 @@ class PosInvoice
     {
         return $this->company_code;
     }
+
+    /**
+     * Set code_table
+     *
+     * @param string $code_table
+     * @return PosClient
+     */
+    public function setCodeTable($code_table)
+    {
+        $this->code_table = $code_table;
+
+        return $this;
+    }
+
+    /**
+     * Get code_table
+     *
+     * @return string 
+     */
+    public function getCodeTable()
+    {
+        return $this->code_table;
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////
+    
+    public function toArray() {
+        $posinvDetailData = null;
+            $posinvDetailData = array(
+            'inv_id'            => $this->getInvId(),
+            'inv_code'          => $this->getInvCode(),
+            'total'             => $this->getTotal(),
+            'cost'              => $this->getCost(),
+            'vat'               => $this->getVat(),
+            'commision'         => $this->getCommision(),
+            'inv_endtime'       => $this->getInvEndtime(),
+            'inv_starttime'     => $this->getInvStarttime(),
+            'userid'            => $this->getUserid(),
+            'status'            => $this->getStatus(),
+            'inv_type'          => $this->getInvType(),
+            'inv_code_parent'   => $this->getInvCodeParent(),
+            'printStatus'       => $this->getPrintStatus(),
+            'inv_salesoff'      => $this->getInvSalesoff(),
+            'inv_arise'         => $this->getInvArise(),
+            'arise_comment'     => $this->getAriseComment(),
+            'client_id'         => $this->getClientId(),
+            'pay_cost'          => $this->getPayCost(),
+            'code_table'          => $this->getCodeTable(),
+            );
+            
+        return $posinvDetailData;
+    }
+    
+    
+////////////////////////////////////////////////////////////////////////////////////////
 }

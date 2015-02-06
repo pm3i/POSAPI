@@ -25,6 +25,16 @@ class PosMediaRepository extends EntityRepository
 			array('media_id' => $media_id, 'company_code'=> $company_code)
 		);
 	}
+
+	public function getAllMedia($itemId, $companyCode){
+		 $sql = "SELECT name FROM pos_media 
+		 		WHERE company_code = '".$companyCode."'
+		 		AND media_id IN (SELECT media_id FROM pos_media_items WHERE items_id = '".$itemId."')
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
 	
 	
 }

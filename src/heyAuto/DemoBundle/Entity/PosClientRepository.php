@@ -19,7 +19,10 @@ use Monolog\Logger;
  */
 class PosClientRepository extends EntityRepository
 {
-
+	public function findClientByPhone($phone)
+	{
+		return $this->getEntityManager()->getRepository('heyAutoDemoBundle:PosClient')->findOneBy(array('phone' => $phone));
+	}
 
 	public function getPosClientByinvoice($invoiceCode)
 	{
@@ -31,35 +34,37 @@ class PosClientRepository extends EntityRepository
 					WHERE inv.inv_code = '".$invoiceCode."'
 				"
 		)->getResult();
+	}
 
-		// return $this->getEntityManager()->createQueryBuilder()
-		// 	->select('c', 'inv')
-		//     ->from('heyAuto\DemoBundle\Entity\PosClient', 'c')
-		//     ->innerJoin('c', 'heyAuto\DemoBundle\Entity\PosInvoice', 'inv', 'c.client_id = inv.client_id') ->getQuery()->getResult();
+	public function getPosClientByPhone($phoneNumber, $companyCode)
+	{
+		return $this->getEntityManager()
+		->createQuery(
+				" SELECT cl
+					FROM heyAutoDemoBundle:PosClient cl
+					WHERE cl.phone = '".$phoneNumber."'
+					AND cl.company_code = '".$companyCode."'
+				"
+		)->getResult();
 	}
 
 	public function createNewPosClient(PosClient $posClient) 
 	{
 		
 		if($posClient == null) {
-			return array (
-					'mSuccess' => false,
-					'mErrorField' => null,
-					'mMessage' => "Unknown error" 
-			);
+			return 2;
 			
 		} else {
+			if($posClient->getPhone() != null && $this->findClientByPhone($posClient->getPhone()) != null){
+				return 2;
+			}
 			
 			$manager = $this->getEntityManager();
 			$manager->persist($posClient);
 			$manager->flush();
 			$posClient ->setClientId ($posClient->getClientId());
 			
-			return array (
-						'mSuccess' => true,
-						'mErrorField' => null,
-						'mMessage' => "Registration succeded"
-			);
+			return 1;
 			
 		}
 	}

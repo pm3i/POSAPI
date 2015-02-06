@@ -117,6 +117,12 @@ class PosInvoiceDetail
      */
     private $price;
 
+     /**
+     * @var string
+     *
+     */
+    private $imagename;
+
     /**
      * Get id
      *
@@ -449,6 +455,30 @@ class PosInvoiceDetail
         return $this->company_code;
     }
 
+    
+    /**
+     * Set imagename
+     *
+     * @param string $imagename
+     * @return PosInvoiceItable
+     */
+    public function setImageName($imagename)
+    {
+        $this->imagename = $imagename;
+
+        return $this;
+    }
+
+    /**
+     * Get imagename
+     *
+     * @return string 
+     */
+    public function getImageName()
+    {
+        return $this->imagename;
+    }
+
 ////////////////////////////////////////////////////////////////////////////////////////
     
     public function toArray() {
@@ -469,6 +499,7 @@ class PosInvoiceDetail
             'priority'                => $this->getPriority(),
             'company_code'            => $this->getCompanyCode(),
             'price'                   => $this->getPrice(),
+            'imagename'         => $this-> getImageName(),
 
             );
             

@@ -142,6 +142,56 @@ class PosInvoiceItableController extends Controller {
 
 	}
 
+	/**
+	 * 
+	 * @param Request $request
+	 * @return \Symfony\Component\HttpFoundation\JsonResponse
+	 * 
+	 * CREATE itable
+	 * @Post("/rest/wsaddinv_itable")
+	 * oryginally: postItableAction
+	 **/
+	
+	public function createNewPosInvoiceItableAction(Request $request) {
+		$posInvoiceItable = new PosInvoiceItable();
+
+		$inv_code   = 'T1_B18_20150206_161656';
+		$table_code = 'T1_B19';
+		$user_id    = '361';
+		$company_code = 'NHSG';
+
+		$posItableData = null;
+
+		date_default_timezone_set('Asia/Bangkok');
+		$now        	= new \DateTime();
+		$now 			= $now->format('y-m-d H:m:s');
+		$date 			= date_create($now);
+		$time_in 			= date_format($date, 'Y-m-d H:i:s');
+
+		$posInvoiceItableArr = $this->getDoctrine()->getRepository('heyAutoDemoBundle:PosInvoiceItable')
+									->findInvoiceItableByInvCodeCodeTableCompanyCode($inv_code, $table_code, $company_code);	
+		if(count($posInvoiceItableArr) <= 0){
+			$posInvoiceItable->setInvCode($inv_code);
+			$posInvoiceItable->setCodeTable($table_code);
+			$posInvoiceItable->setUserId($user_id);
+			$posInvoiceItable->setStatus(1);
+			$posInvoiceItable->setCreattime($time_in);
+			$posInvoiceItable->setCompanyCode($company_code);
+			$result = $this->getDoctrine()->getRepository('heyAutoDemoBundle:PosInvoiceItable')
+									->createNewPosInvoiceItable($posInvoiceItable);
+			$posItableData = array( "success"          => $result);						
+		}else{
+			$posItableData = array( "success"          => 0);
+		}
+
+
+		$resultJson[] = $posItableData;
+		$response = new JsonResponse();
+		$response->setData( $resultJson );
+		return $response;
+
+	}
+
 
 	
 }

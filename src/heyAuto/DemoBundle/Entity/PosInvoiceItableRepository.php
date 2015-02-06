@@ -20,12 +20,48 @@ use Monolog\Logger;
 class PosInvoiceItableRepository extends EntityRepository
 {
 	
+	public function findInvoiceItableByInvCodeStatusCompanyCode($inv_code, $companyCode)
+	{
+		return $this->getEntityManager()
+		->createQuery(
+				"SELECT p FROM heyAutoDemoBundle:PosInvoiceItable p 
+				 WHERE p.inv_code= '".$inv_code."' 
+				 AND p.status = 1
+				 AND p.company_code = '".$companyCode."'
+				"
+		)->getResult();
+	}
+
+	public function findInvoiceItableByInvCodeCodeTableCompanyCode($inv_code, $codeTable, $companyCode)
+	{
+		return $this->getEntityManager()
+		->createQuery(
+				"SELECT p FROM heyAutoDemoBundle:PosInvoiceItable p 
+				 WHERE p.inv_code= '".$inv_code."' 
+				 AND p.code_table = '".$codeTable."' 
+				 AND p.company_code = '".$companyCode."'
+				"
+		)->getResult();
+	}
+
+
 	public function getInvoiceItableByCompanyCodeAndCodeTable($code_table_tranf, $company_code) {
 		return $this->getEntityManager()
 			->createQuery(
 					" SELECT pit FROM heyAutoDemoBundle:PosInvoiceItable pit
 						WHERE pit.company_code = '".$company_code."' 
 							  AND pit.code_table = '".$code_table_tranf."'
+					"
+			)->getResult();
+		
+	}
+
+	public function getInvoiceItableByCompanyCodeAndInvoiceCode($inv_code, $company_code) {
+		return $this->getEntityManager()
+			->createQuery(
+					" SELECT pit FROM heyAutoDemoBundle:PosInvoiceItable pit
+						WHERE pit.company_code = '".$company_code."' 
+							  AND pit.inv_code = '".$inv_code."'
 					"
 			)->getResult();
 		
@@ -55,5 +91,48 @@ class PosInvoiceItableRepository extends EntityRepository
 			)->getResult();
 		
 	}
+
+	public function getCodeTableFromInvoiceCode( $inv_code, $companyCode){
+		 $sql = " SELECT * FROM pos_invoice_itable 
+				  WHERE company_code = '".$companyCode."' AND inv_code = '".$inv_code."' AND status=1
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+
+	public function updateStatusInvItableByInvCode( $dateCurrent, $inv_code, $companyCode){
+		 $sql = " UPDATE pos_invoice_itable SET status ='0', creattime = '".$dateCurrent."' 
+		 		  WHERE company_code = '".$companyCode."' AND inv_code='".$inv_code."'
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		return $stmt->execute();
+	}
+
+	public function updateInvItableByCodeTableAndStatus( $coteTable, $status, $time_in){
+		 $sql = " UPDATE pos_invoice_itable SET status= '".$status."' , creattime = '".$time_in."' 
+		 			WHERE code_table = '".$coteTable."' AND status=1
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		return $stmt->execute();
+	}
+
+	public function createNewPosInvoiceItable(PosInvoiceItable $posInvoiceItable) 
+	{
+		
+		if($posInvoiceItable == null) {
+			return 0;
+			
+		} else {
+			
+			$manager = $this->getEntityManager();
+			$manager->persist($posInvoiceItable);
+			$manager->flush();
+			
+			return 1;
+			
+		}
+	}
+
 
 }

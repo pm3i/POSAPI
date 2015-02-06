@@ -51,6 +51,23 @@ class PosInvoiceRepository extends EntityRepository
 		
 	}
 
+	public function createNewPosInvoice(PosInvoice $posInvoice) 
+	{
+		
+		if($posInvoice == null) {
+			return 0;
+			
+		} else {
+			
+			$manager = $this->getEntityManager();
+			$manager->persist($posInvoice);
+			$manager->flush();
+			
+			return 1;
+			
+		}
+	}
+
 	public function findInvoiceIdByInvoiceCode($invCode, $companyCode)
 	{
 		// return $this->getEntityManager()->getRepository('heyAutoDemoBundle:PosInvoice')
@@ -64,4 +81,73 @@ class PosInvoiceRepository extends EntityRepository
 				"
 		)->getResult();
 	}
+
+	public function getInvoiceByStatus($dateNow, $companyCode){
+		 $sql = "SELECT inv.*
+					FROM pos_invoice AS inv				
+					WHERE inv.company_code = '".$companyCode."' 
+					AND convert(varchar, inv.inv_starttime, 105) >= convert(varchar, getdate(), 105)
+					AND inv.status != 3
+					ORDER BY CASE inv.status WHEN 1 THEN 1 
+											 WHEN 3 THEN 2
+											 WHEN 0 THEN 3 
+											 WHEN 2 THEN 4  
+							 END, inv.inv_id DESC
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+
+	public function getInvoiceOfClient($from, $to, $companyCode){
+		 $sql = " SELECT * 
+					FROM (
+					SELECT inv.inv_id, inv.inv_code, inv.total, inv.cost, inv.vat, inv.commision,
+						   inv.inv_endtime, inv.inv_starttime, inv.user_id, inv.status, 
+						   ROW_NUMBER() OVER (ORDER BY inv_id) AS RowNum
+					FROM pos_invoice inv
+					WHERE convert(varchar, inv.inv_starttime, 105)>= convert(varchar, getdate(), 105)
+					AND inv.company_code = '".$companyCode."' AND inv.status = 1 OR inv.status = 4 
+					) AS paping
+					WHERE paping.RowNum BETWEEN '".$from."' and '".$to."'
+					ORDER BY CASE paping.status WHEN 1 THEN 1 
+											 WHEN 3 THEN 2
+											 WHEN 0 THEN 3 
+											 WHEN 2 THEN 4  
+								 END, paping.inv_id DESC
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+
+	public function updatePriceInPosInvoice($inv_code, $total, $time_in){
+		$sql = "UPDATE pos_invoice SET total = '".$total."', inv_endtime = '".$time_in."' WHERE inv_code = '".$inv_code."'
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		
+		return $stmt->execute();
+	}
+
+	public function updateStatusAndEndTimeInPosInvoice($inv_code, $inv_type, $dateCurrent){
+		$sql = "UPDATE pos_invoice SET status = 3 , inv_endtime='".$dateCurrent."', inv_type = '".$inv_type."' 
+				where inv_code ='".$inv_code."'
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		
+		return $stmt->execute();
+	}
+
+	public function updateStatusByInvoiceCodeAndCompanyCode($inv_code, $company_code, $time_in, $inv_type, $status){
+		$sql = "UPDATE pos_invoice SET status = '".$status."' , inv_endtime= '".$time_in."',inv_type = '".$inv_type."' 
+				where inv_code ='".$inv_code."' AND company_code = '".$company_code."'
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		
+		return $stmt->execute();
+	}
+
+	
+
+
 }

@@ -66,7 +66,7 @@ class PosITableController extends Controller {
 	/**
 	 *
 	 * @return JsonResponse
-	 * @Get("/rest/wsgetalltable")
+	 * @Get("/rest/wsgetallitable")
 	 *
 	 * lay tat ca danh sach ban trong LIST
 	 * ---------------
@@ -78,7 +78,7 @@ class PosITableController extends Controller {
 		$companyCode = "NHSG";
 		$floor = 1;
 
-		$positables = $this->getDoctrine ()->getRepository ( 'heyAutoDemoBundle:PosITable' )->getItableByFloor($companyCode, $floor);
+		$positables = $this->getDoctrine ()->getRepository ( 'heyAutoDemoBundle:PosITable' )->getItableEmptyByFloor($companyCode, $floor);
 
 		$resultJson = null;
 		foreach($positables as $positable) {			
@@ -235,7 +235,6 @@ class PosITableController extends Controller {
 	 * @Post("/rest/wsupdatelistitable")
 	 * oryginally: postItableAction
 	 **/
-	 /// Ham insert chua co thong bao tra ve ket qua thanh cong
 	public function updatePosITableAction(Request $request) {
 		$posITable = new PosITable();
 
@@ -279,6 +278,64 @@ class PosITableController extends Controller {
 		}
 		
 
+		$response = new JsonResponse();
+		$response->setData( $resultJson );
+		return $response;
+
+	}
+
+	/**
+	 * 
+	 * @param Request $request
+	 * @return \Symfony\Component\HttpFoundation\JsonResponse
+	 * 
+	 * CREATE itable
+	 * @Post("/rest/wsupdateitable")
+	 * oryginally: postItableAction
+	 **/
+	public function updateItableAction(Request $request) {
+		$posITable = new PosITable();
+
+		$table_code = 'T1_B20';
+		$check = '0';
+		$user_id = '361';
+		$company_code = 'NHSG';
+		
+		$now        	= new \DateTime();
+		$now 			= $now->format('y-m-d H:m:s');
+		$date 			= date_create($now);
+		$now 			= date_format($date, 'Y-m-d H:i:s');
+
+		$resultJson = null;
+		try {
+			$posItableArr = $this->getDoctrine()->getRepository('heyAutoDemoBundle:PosITable')
+							->findItableByCodeTableAndCompanyCode($table_code, $company_code);
+			foreach ($posItableArr as $posItable) {
+				if($check == 0){
+					$posItable->setStatus(0);
+					$posItable->setFlag(0);
+					$posItable->setUserid($user_id);
+					$posItable->setUpdateTime($now);
+				}
+				if($check == 1){
+					$posItable->setStatus(1);
+					$posItable->setUserid($user_id);
+					$posItable->setUpdateTime($now);
+				}
+				if($check == 2){
+					$posItable->setStatus(2);
+					$posItable->setUserid($user_id);
+					$posItable->setUpdateTime($now);
+				}
+				$responseItable = $this->getDoctrine()->getRepository('heyAutoDemoBundle:PosITable')->updateItable($posItable);	
+			}	
+			$posItableData = null;
+			$posItableData = $responseItable;
+		} catch(Exception $e){
+			$posItableData = null;
+			$posItableData = array( "result"          => "Update false");
+		}
+		$resultJson[] = $posItableData;
 		$response = new JsonResponse();
 		$response->setData( $resultJson );
 		return $response;
