@@ -154,4 +154,14 @@ class PosInvoiceDetailRepository extends EntityRepository
 		$stmt->execute();
 		return $stmt->fetchAll();
 	}
+
+	public function getSumQuantityInvoiceDetail($companyCode, $item_id){
+		 $sql = "SELECT sum(quantity) AS quantity from pos_invoice_detail 
+				where convert(date,invd_createtime)= convert(date,getdate()) 
+				and item_id='".$item_id."'  and checked=1 and company_code='".$companyCode."'
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
 }

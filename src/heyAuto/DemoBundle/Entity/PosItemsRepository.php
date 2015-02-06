@@ -70,5 +70,21 @@ class PosItemsRepository extends EntityRepository
 	}
 
 
+	public function getSumQuantityInWsGetQuantityBlance( $company_code, $item_id){
+		 $sql = " SELECT sum(inv_d.quantity) as quantitycook FROM pos_cookitem  AS inv_d				
+					INNER JOIN pos_items it ON it.item_id = inv_d.item_id					
+					WHERE inv_d.company_code = '".$company_code."' 
+					AND it.company_code = '".$company_code."'
+					AND inv_d.checked = '1' 
+					and CONVERT(VARCHAR(20),inv_d.cook_createtime, 112) >= CONVERT(VARCHAR(20),GETDATE(), 112)
+					and it.item_id = '".$item_id."'
+					GROUP BY inv_d.item_id,  it.name
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+
+
 	
 }
