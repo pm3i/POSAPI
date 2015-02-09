@@ -44,7 +44,6 @@ class PosInvoiceItableRepository extends EntityRepository
 		)->getResult();
 	}
 
-
 	public function getInvoiceItableByCompanyCodeAndCodeTable($code_table_tranf, $company_code) {
 		return $this->getEntityManager()
 			->createQuery(
@@ -68,6 +67,22 @@ class PosInvoiceItableRepository extends EntityRepository
 	}
 
 	public function updateInvoiceItable(PosInvoiceItable $posInvoiceItable) {
+
+
+		$manager = $this->getEntityManager();
+		$manager->merge($posInvoiceItable);
+		$manager->flush();
+
+		return array (
+						'mSuccess' => true,
+						'mErrorField' => null,
+						'mMessage' => "User updated successfully"
+				);
+		
+	}
+
+	public function updateItable(PosInvoiceItable $posInvoiceItable) {
+
 
 		$manager = $this->getEntityManager();
 		$manager->merge($posInvoiceItable);
@@ -133,6 +148,5 @@ class PosInvoiceItableRepository extends EntityRepository
 			
 		}
 	}
-
 
 }

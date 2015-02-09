@@ -213,7 +213,7 @@ class PosUserController extends Controller {
 	 * @return JsonResponse
 	 * @Get("/rest/allPosstages")
 	 *
-	 * GET POSCOMPANYS LIST
+	 * GET POSSTAGES LIST
 	 * ---------------
 	 * Request parameters:
 	 *
@@ -234,21 +234,19 @@ class PosUserController extends Controller {
 		return $response;
 	}
 	
-
+	//find pos_stage Online
 	/**
 	 * @param PosStage $posstage
 	 * @return JsonResponse
 	 * GET POSSTAGE
-	 * @Get("/rest/posstages")
+	 * @Get("/rest/posstagesonline")
 	 **/
 	public function getPosStagesJsonAction(Request $request) {
 
-		$logger = $this->get('logger');
 		$response = new JsonResponse();
 		$posstages = $this->getDoctrine ()->getRepository ( 'heyAutoDemoBundle:PosStage' )->findStagebyStatus (1);
-		//$logger->debug(">>>>>>>>>>>>>>>>>>:" . print_r($posstages));
 		$resultJson = null;
-		// echo count($posstages);
+
 		foreach($posstages as $posstage) {
 
 			$resultJson[] = $posstage->toArray(1);

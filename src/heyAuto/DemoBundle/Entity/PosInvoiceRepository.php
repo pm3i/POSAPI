@@ -205,7 +205,4 @@ class PosInvoiceRepository extends EntityRepository
 		return $stmt->fetchAll();
 	}
 
-	
-
-
 }

@@ -72,13 +72,9 @@ class PosInvoiceItable
 
     /**
      * @var string
-     *
      * @ORM\Column(name="company_code", type="string", length=255, nullable=true)
      */
     private $company_code;
-
-
-   
 
     /**
      * Get id
@@ -273,7 +269,6 @@ class PosInvoiceItable
     {
         return $this->company_code;
     }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////
     

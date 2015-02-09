@@ -55,6 +55,21 @@ class PosItableRepository extends EntityRepository
 				"
 		)->getResult();
 	}
+	public function getItableByFloor($companyCode, $floor) {
+		return $this->getEntityManager()
+		->createQuery(
+				" SELECT tb
+					FROM heyAutoDemoBundle:PosITable tb
+					INNER JOIN heyAutoDemoBundle:PosStageITable st WITH st.id_itable = tb.itable_id
+					INNER JOIN heyAutoDemoBundle:PosStage p_s WITH p_s.code = st.id_stage
+					WHERE p_s.company_code = '".$companyCode."' 
+						  AND tb.company_code= '".$companyCode."' 
+						  AND p_s.code= '".$floor."' 
+						  AND p_s.status=1 
+			   			  AND st.status=1
+				"
+		)->getResult();
+	}
 
 
 	public function checkExistTable($companyCode, $isCodeTable) {
@@ -104,6 +119,7 @@ class PosItableRepository extends EntityRepository
 		)->getResult();
 	}
 
+
 	public function updateItable(PosITable $posItable) {
 
 		$manager = $this->getEntityManager();
@@ -115,7 +131,22 @@ class PosItableRepository extends EntityRepository
 						'mErrorField' => null,
 						'mMessage' => "User updated successfully"
 				);
+	}
 		
+
+	public function updateItableByCompanyCodeItableId(PosITable $posItable, $companyCode, $itableId) {
+		return $this->getEntityManager()
+		->createQuery(
+				" UPDATE heyAutoDemoBundle:PosITable SET 
+					code_table 	= '".$posItable->getCodeTable()."',
+					pos_x		= '".$posItable->getPosX()."',
+					pos_y 		= '".$posItable->getPosY()."',
+					update_time	= '".$posItable->getUpdateTime()."',
+					userid 		= '".$posItable->getUserid()."',
+					WHERE company_code= '".$companyCode."' 
+						AND itable_id = '".$itableId."' 
+				"
+		)->getResult();
 	}
 
 	public function createNewPosITable(PosITable $posItable) 
@@ -167,6 +198,10 @@ class PosItableRepository extends EntityRepository
 				";
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		return $stmt->execute();
+	}
+	public function findTableByCompanyCode ($companyCode)
+	{
+		return $this->findBy (array('company_code' => $companyCode));
 	}
 
 }

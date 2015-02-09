@@ -228,5 +228,9 @@ class PosInvoiceDetailRepository extends EntityRepository
 		return $stmt->fetchAll();
 	}
 
-
+	public function deleteInvoice($company_code, $inv_code, $item_id) 
+	{
+		return $this->getEntityManager()
+		->createQuery("DELETE FROM pos_invoice_detail where company_code = '$company_code' AND inv_code ='".$inv_code."' and item_id ='".$item_id."'")->getResult();	
+	}
 }

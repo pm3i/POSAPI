@@ -151,4 +151,22 @@ class PosStageITable
     {
         return $this->status;
     }
+
+	
+
+	public function toArray() {
+
+    
+        $tablesonastageData = null;
+            $tablesonastageData = array(
+            'mId'               	=> $this->getId(),
+            'mId_itable'             	=> $this->getIdItable(),
+            'mId_stage'         	=> $this->getIdStage(),
+            'mDescription'            	=> $this->getDescription(),
+            'mStatus'     		=> $this->getStatus(),
+            'mResult'           	=> "success"
+            );
+            
+        return $tablesonastageData;
+    }
 }

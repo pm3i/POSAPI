@@ -110,12 +110,24 @@ class PosInvoiceController extends Controller {
 			}
 
 		}
-
-		//$resultJson[] = $posItableData;
-		$response = new JsonResponse();
-		$response->setData( $resultJson );
-		return $response;
 	}
+
+	// 	//$resultJson[] = $posItableData;
+	// public function getallinvoiceAction(Request $request) {
+		
+	// 	$mCompanyCode='NHSG';
+
+	// 	$posInvoices = $this->getDoctrine ()->getRepository ( 'heyAutoDemoBundle:PosInvoice' )
+	// 			->getNumberRowForInvoice($mCompanyCode);
+	// 	$numberrow = count($posInvoices);
+	// 	echo $numberrow;
+	// 	$resultJson = null;
+	// 	//$resultJson[] = $user->toArray();
+	
+	// 	$response = new JsonResponse();
+	// 	$response->setData( $resultJson );
+	// 	return $response;
+	// }
 
 	/**
 	 *
@@ -129,7 +141,6 @@ class PosInvoiceController extends Controller {
 	 *
 	 */
 
-	// Ham dang tra du lieu sai
 	public function getAn_AllInvoiceDetailAction(Request $request) {
 		
 		$companyCode='NHHR';
@@ -650,5 +661,19 @@ class PosInvoiceController extends Controller {
 
 	}
 
+	/**
+	 * DELETE Invoice (via POST, PATCH or PUT)
+	 * @ParamConverter("PosInvoice", class="heyAutoDemoBundle:PosInvoice")
+	 * @Post("/rest/deleteposinvoices/{id}")
+	 * @Patch("/rest/deleteposinvoices/{id}")
+	 * @Put("/rest/deleteposinvoices/{id}")
+	 * oryginally: PosInvoiceAction
+	 **/
 
+	public function deletePosInvoiceAction(Request $request){
+		$idInvoice = $request->get('mInv-id');
+		
+	}
+
+	
 }

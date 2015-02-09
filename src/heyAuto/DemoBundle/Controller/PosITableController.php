@@ -236,6 +236,7 @@ class PosITableController extends Controller {
 	 * @Post("/rest/wsupdatelistitable")
 	 * oryginally: postItableAction
 	 **/
+	 /// Ham insert chua co thong bao tra ve ket qua thanh cong
 	public function updatePosITableAction(Request $request) {
 		$posITable = new PosITable();
 
@@ -346,5 +347,30 @@ class PosITableController extends Controller {
 	}
 
 
+	//Lay tat ca cac ban trong tang
+
+	/**
+	 * @param PosStageITable $posStageITable
+	 * @return JsonResponse
+	 * @ParamConverter("posStageITable", class="heyAutoDemoBundle:PosStageITable")
+	 * GET TABLE ON A STAGE
+	 * @Get("/rest/alltablesonastage/{id_stage}")
+	 **/
+
+	public function getAllTablesOnAStageJsonAction(Request $request) {
+		$id_stage = $request->get('id_stage');
+		$response = new JsonResponse();
+		$postablesstage = $this->getDoctrine ()->getRepository ( 'heyAutoDemoBundle:PosStageITable' )->findAllTableByStageId ($id_stage);
+		$resultJson = null;
+
+		foreach($postablesstage as $postablestage) {
+
+			$resultJson[] = $postablestage->toArray($id_stage);
+		}
+
+		$response->setData( $resultJson );
+		return $response;
+	}
+	
 	
 }

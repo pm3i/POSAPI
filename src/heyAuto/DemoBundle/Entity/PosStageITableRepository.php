@@ -5,6 +5,10 @@ namespace heyAuto\DemoBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use heyAuto\DemoBundle\Entity\PosStageITable;
 
+use heyAuto\DemoBundle\Entity\PosStageITable;
+use Symfony\Component\Validator\Constraints\EqualTo;
+use Monolog\Logger;
+
 /**
  * PosStageRepository
  *
@@ -45,5 +49,19 @@ class PosStageITableRepository extends EntityRepository
 					WHERE tb.id_itable = '".$itableId."' 
 				"
 		)->getResult();
+	}
+
+	public function findAllOnline()
+	{
+		return $this->getEntityManager()
+		->createQuery(
+				'SELECT p FROM heyAutoDemoBundle:User p WHERE p.online=1 ORDER BY p.username DESC'
+		)->getResult();
+	}
+	
+	
+	public function findAllTableByStageId($idStage)
+	{
+		return $this->findBy (array('id_stage' => $idStage));	
 	}
 }

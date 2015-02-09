@@ -160,7 +160,6 @@ class PosInvoice
      */
     private $code_table;
 
-
     /**
      * Set inv_id
      *

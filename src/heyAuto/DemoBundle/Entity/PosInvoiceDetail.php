@@ -107,7 +107,6 @@ class PosInvoiceDetail
 
     /**
      * @var string
-     *
      * @ORM\Column(name="company_code", type="string", length=255, nullable=true)
      */
     private $company_code;
@@ -454,7 +453,6 @@ class PosInvoiceDetail
     {
         return $this->company_code;
     }
-
     
     /**
      * Set imagename
@@ -504,10 +502,6 @@ class PosInvoiceDetail
             );
             
         return $posinvDetailData;
-    }
-
-    public function toString() {
-        return print_r($this->toArray(),1);
     }
     
     

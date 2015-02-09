@@ -28,7 +28,9 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
 
-
+posstages:
+    type:      rest
+    resource:  heyAuto\DemoBundle\Controller\PosStagesController
 
 #default:
 #    type:      rest
