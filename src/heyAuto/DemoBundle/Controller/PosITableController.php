@@ -116,6 +116,7 @@ class PosITableController extends Controller {
 		$isCodeTable      = "T".$floor."_B".$code_table1;
 		$positables = $this->getDoctrine ()->getRepository ( 'heyAutoDemoBundle:PosITable' )->checkExistTable($company_code, $isCodeTable);
 		
+		date_default_timezone_set('Asia/Bangkok');
 		$now        	= new \DateTime();
 		$now 			= $now->format('y-m-d H:m:s');
 		$date 			= date_create($now);
@@ -245,6 +246,7 @@ class PosITableController extends Controller {
 		$code_table 	  = 'T1_B112';
 		$user_id     	  = 356;
 		
+		date_default_timezone_set('Asia/Bangkok');
 		$now        	= new \DateTime();
 		$now 			= $now->format('y-m-d H:m:s');
 		$date 			= date_create($now);
@@ -301,6 +303,7 @@ class PosITableController extends Controller {
 		$user_id = '361';
 		$company_code = 'NHSG';
 		
+		date_default_timezone_set('Asia/Bangkok');
 		$now        	= new \DateTime();
 		$now 			= $now->format('y-m-d H:m:s');
 		$date 			= date_create($now);

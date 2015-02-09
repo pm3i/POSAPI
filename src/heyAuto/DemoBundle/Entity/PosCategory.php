@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * PosCategory
  *
  * @ORM\Table(name="pos_category")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="heyAuto\DemoBundle\Entity\PosCategoryRepository")
  */
 class PosCategory
 {

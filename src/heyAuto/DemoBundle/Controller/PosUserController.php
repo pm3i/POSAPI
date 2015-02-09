@@ -101,6 +101,7 @@ class PosUserController extends Controller {
 		$lat 			= '1';
 		$lon 			= '1';
 		
+		date_default_timezone_set('Asia/Bangkok');
 		$now        	= new \DateTime();
 		$now 			= $now->format('y-m-d H:m:s');
 		$date 			= date_create($now);

@@ -91,6 +91,8 @@ class PosItemsController extends Controller {
 		$companyCode='NHHR';
 		$languageCode = 1;
 		$parent_id       = '1';// $obj->{'cate_id'};
+
+		date_default_timezone_set('Asia/Bangkok');
 		$now        	= new \DateTime();
 		$now 			= $now->format('y-m-d H:m:s');
 		$date 			= date_create($now);

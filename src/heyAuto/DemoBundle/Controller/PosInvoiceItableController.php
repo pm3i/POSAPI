@@ -52,7 +52,7 @@ class PosInvoiceItableController extends Controller {
 		$code_table_get    		  = 'T1_B2';
 		$company_code     		  = 'NHSG';
 		$user_id     	 		  = 356;
-		
+		date_default_timezone_set('Asia/Bangkok');
 		$now        	= new \DateTime();
 		$now 			= $now->format('y-m-d H:m:s');
 		$date 			= date_create($now);

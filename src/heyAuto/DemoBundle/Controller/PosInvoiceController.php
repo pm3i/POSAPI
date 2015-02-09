@@ -52,6 +52,7 @@ class PosInvoiceController extends Controller {
 	public function getAllInvoiceByStatusAction(Request $request) {
 		
 		$mCompanyCode='NHHR';
+		date_default_timezone_set('Asia/Bangkok');
 		$now        	= new \DateTime();
 		$now 			= $now->format('y-m-d H:m:s');
 		$date 			= date_create($now);
@@ -273,7 +274,7 @@ class PosInvoiceController extends Controller {
 		$resultJson = null;
 		$posItableData = null;
 		
-
+		date_default_timezone_set('Asia/Bangkok');
 		$now        	= new \DateTime();
 		$now 			= $now->format('y-m-d H:m:s');
 		$date 			= date_create($now);
@@ -358,6 +359,7 @@ class PosInvoiceController extends Controller {
 		$subAdd	  = '';
 		$user_id  = '356';
 		$company_code = 'NHSG';
+		date_default_timezone_set('Asia/Bangkok');
 		$now        	= new \DateTime();
 		$now 			= $now->format('y-m-d H:m:s');
 		$date 			= date_create($now);
@@ -480,6 +482,7 @@ class PosInvoiceController extends Controller {
 	 **/
 	
 	public function updateStatusInvoiceAction(Request $request) {
+		date_default_timezone_set('Asia/Bangkok');
 		$now        	= new \DateTime();
 		$now 			= $now->format('y-m-d H:m:s');
 		$date 			= date_create($now);
@@ -534,6 +537,8 @@ class PosInvoiceController extends Controller {
 	
 	public function updateJoinInvoiceAction(Request $request) {
 		$posInvoiceItables = new PosInvoiceItable();
+
+		date_default_timezone_set('Asia/Bangkok');
 		$now        	= new \DateTime();
 		$now 			= $now->format('y-m-d H:m:s');
 		$date 			= date_create($now);

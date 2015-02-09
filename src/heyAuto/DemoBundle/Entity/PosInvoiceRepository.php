@@ -147,6 +147,64 @@ class PosInvoiceRepository extends EntityRepository
 		return $stmt->execute();
 	}
 
+	public function reportInvoice($start_date, $end_date, $companyCode){
+		 $sql = "SELECT CONVERT(VARCHAR(20),inv_endtime, 112) AS Mydate, SUM(total) AS summed, COUNT(inv_endtime) AS total
+				 FROM pos_invoice WHERE company_code = '".$companyCode."'
+				 GROUP BY CONVERT(VARCHAR(20),inv_endtime, 112) 
+				 HAVING  CONVERT(VARCHAR(20),inv_endtime, 112)>= CONVERT(VARCHAR(20),'".$start_date."', 112) 
+						 AND CONVERT(VARCHAR(20),inv_endtime, 112)<= CONVERT(VARCHAR(20),'".$end_date."', 112) 
+						 AND CONVERT(VARCHAR(20),inv_endtime, 112) IS NOT NULL
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+
+	public function reportItemsInvoice($start_date, $end_date, $company_code, $language_code){
+		 $sql = "SELECT p_inv_d.item_id , lng.lng_value,  
+		 			SUM (p_inv_d.quantity ) as total, p_i_c_d.price
+					FROM pos_invoice As p_inv
+					INNER JOIN pos_invoice_detail as p_inv_d ON p_inv.inv_code = p_inv_d.inv_code
+					INNER JOIN pos_items AS p_i ON p_i.item_id = p_inv_d.item_id
+					INNER JOIN pos_items_cost_detail AS p_i_c_d ON p_i_c_d.item_id = p_i.item_id
+					INNER JOIN pos_item_cost AS p_i_c ON p_i_c.id = p_i_c_d.items_cost_id
+					INNER JOIN pos_language_item lng ON lng.item_id = p_i.item_id 
+					WHERE p_inv.company_code = '".$company_code."'
+					AND lng.lng_code = '".$language_code."'
+					AND CONVERT(VARCHAR(20),p_i_c.start_date, 112)  <CONVERT(VARCHAR(20),'".$start_date."', 112) 
+					AND  CONVERT(VARCHAR(20),p_i_c.end_date, 112) >CONVERT(VARCHAR(20),'".$end_date."', 112)
+					AND CONVERT(VARCHAR(20),p_inv.inv_endtime, 112)>= CONVERT(VARCHAR(20),'".$start_date."', 112) 
+					AND CONVERT(VARCHAR(20),p_inv.inv_endtime, 112)<= CONVERT(VARCHAR(20),'".$end_date."', 112)
+					GROUP BY p_inv_d.item_id, lng.lng_value, p_i_c_d.price
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+
+	public function reportCategoryInvoice($start_date, $end_date, $company_code, $language_code, $category_id){
+		 $sql = "SELECT p_inv_d.item_id ,  lng.lng_value,  SUM (p_inv_d.quantity ) as total, p_i_c_d.price
+					FROM pos_invoice As p_inv
+					INNER JOIN pos_invoice_detail as p_inv_d ON p_inv.inv_code = p_inv_d.inv_code
+					INNER JOIN pos_items AS p_i ON p_i.item_id = p_inv_d.item_id
+					INNER JOIN pos_items_cost_detail AS p_i_c_d ON p_i_c_d.item_id = p_i.item_id
+					INNER JOIN pos_item_cost AS p_i_c ON p_i_c.id = p_i_c_d.items_cost_id
+					INNER JOIN pos_language_item lng ON lng.item_id = p_i.item_id 
+					INNER JOIN pos_category p_c ON p_c.category_id = p_i.category_id
+					WHERE p_inv.company_code = '".$company_code."'
+					AND lng.lng_code = '".$language_code."'
+					AND  p_c.category_id = '".$category_id."'
+					AND CONVERT(VARCHAR(20),p_i_c.start_date, 112)  <CONVERT(VARCHAR(20),'".$start_date."', 112) 
+					AND  CONVERT(VARCHAR(20),p_i_c.end_date, 112) >CONVERT(VARCHAR(20),'".$end_date."', 112)
+					AND CONVERT(VARCHAR(20),p_inv.inv_endtime, 112)>= CONVERT(VARCHAR(20),'".$start_date."', 112) 
+					AND CONVERT(VARCHAR(20),p_inv.inv_endtime, 112)<= CONVERT(VARCHAR(20),'".$end_date."', 112)
+					GROUP BY p_inv_d.item_id, lng.lng_value, p_i_c_d.price
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+
 	
 
 

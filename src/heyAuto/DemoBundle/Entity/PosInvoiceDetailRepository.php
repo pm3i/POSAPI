@@ -20,11 +20,27 @@ use Monolog\Logger;
  */
 class PosInvoiceDetailRepository extends EntityRepository
 {
+	public function findInvoiceDetailById($id)
+	{
+		return $this->getEntityManager()->getRepository('heyAutoDemoBundle:PosInvoiceDetail')->findBy(array('id' => $id));
+	}
+
 	public function findInvoiceDetailByInvoieCode($inv_code)
 	{
 		return $this->getEntityManager()
 		->createQuery(
 				"SELECT p FROM heyAutoDemoBundle:PosInvoiceDetail p WHERE p.inv_code= '".$inv_code."' "
+		)->getResult();
+	}
+
+	public function findInvoiceDetailByInvoieCodeAndItemId($inv_code, $itemId)
+	{
+		return $this->getEntityManager()
+		->createQuery(
+				"SELECT p FROM heyAutoDemoBundle:PosInvoiceDetail p 
+				 WHERE p.inv_code= '".$inv_code."'
+				 AND p.item_id= '".$itemId."' 
+			    "
 		)->getResult();
 	}
 
@@ -164,4 +180,53 @@ class PosInvoiceDetailRepository extends EntityRepository
 		$stmt->execute();
 		return $stmt->fetchAll();
 	}
+
+	public function updateInvoiceDetail(PosInvoiceDetail $posInvoiceDetail) {
+		if($posInvoiceDetail == null){
+			return 0;
+		}
+
+		$manager = $this->getEntityManager();
+		$manager->merge($posInvoiceDetail);
+		$manager->flush();
+
+		return 1;
+	}
+
+	public function deleteInvoiceDetailById($id){
+		 $sql = "DELETE FROM pos_invoice_detail where id ='".$id."'
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		return $stmt->execute();
+	}
+
+	public function getInvoiceCookDetail($companyCode){
+		 $sql = "SELECT inv_d.item_id,  sum(inv_d.quantity) as total , l_i.lng_value
+				FROM pos_invoice_detail AS inv_d	
+				INNER JOIN pos_invoice iv ON iv.inv_code = inv_d.inv_code
+				INNER JOIN pos_items it ON it.item_id = inv_d.item_id	
+				INNER JOIN pos_language_item l_i ON l_i.item_id = it.item_id
+				WHERE  CONVERT(VARCHAR(20),inv_d.invd_createtime, 112) >= CONVERT(VARCHAR(20),GETDATE(), 112)
+				       AND inv_d.company_code = '".$companyCode."'
+					   AND l_i.lng_code ='1'
+					   AND iv.status !='2'
+				GROUP BY inv_d.item_id,  l_i.lng_value
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+
+	public function checkComment($item_id, $companyCode){
+		 $sql = "SELECT  comment,checked from pos_invoice_detail 
+					where item_id='".$item_id."' 
+					and company_code='".$companyCode."' 
+					and convert(date,invd_createtime)=convert(date,getdate())
+				";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+
+
 }
